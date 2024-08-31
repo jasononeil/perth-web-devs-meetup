@@ -18,4 +18,9 @@ class MeetupEvent extends Model
     {
         return $this->hasMany("App\Models\RSVP");
     }
+
+    public function remainingPlaces()
+    {
+        return $this->max_attendance - $this->rsvps()->count();
+    }
 }
