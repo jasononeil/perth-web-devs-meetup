@@ -1,6 +1,71 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "nodejs@18": {
+      "last_modified": "2024-08-14T11:41:26Z",
+      "plugin_version": "0.0.2",
+      "resolved": "github:NixOS/nixpkgs/0cb2fd7c59fed0cd82ef858cbcbdb552b9a33465#nodejs_18",
+      "source": "devbox-search",
+      "version": "18.20.4",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/jv2bz2b2pb2iy2q2i5r05b795fqvwai2-nodejs-18.20.4",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/pzm8crfgfkxrrp459wh3bd7mdlwq8nfs-nodejs-18.20.4-libv8"
+            }
+          ],
+          "store_path": "/nix/store/jv2bz2b2pb2iy2q2i5r05b795fqvwai2-nodejs-18.20.4"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/d4jkkmx440krdz5izfy4kbwn3fpx69yp-nodejs-18.20.4",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/hl54kkx0ydb2hx75ni1l1fr7d0kgxazy-nodejs-18.20.4-libv8"
+            }
+          ],
+          "store_path": "/nix/store/d4jkkmx440krdz5izfy4kbwn3fpx69yp-nodejs-18.20.4"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/r0lkisl0y12p585lfa6a1c0h12zksz10-nodejs-18.20.4",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/8msf26g4k1j98sfsdyivmjndp2bapdxf-nodejs-18.20.4-libv8"
+            }
+          ],
+          "store_path": "/nix/store/r0lkisl0y12p585lfa6a1c0h12zksz10-nodejs-18.20.4"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/k9pq7ijgg6jjynmkcn4radvm5pqrrndk-nodejs-18.20.4",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/da3ndzam8hfjd2ad47ddlyzglb71jxaf-nodejs-18.20.4-libv8"
+            }
+          ],
+          "store_path": "/nix/store/k9pq7ijgg6jjynmkcn4radvm5pqrrndk-nodejs-18.20.4"
+        }
+      }
+    },
     "php83Packages.composer@latest": {
       "last_modified": "2024-08-20T09:32:23Z",
       "resolved": "github:NixOS/nixpkgs/a04eac9c5aa7f82e02d6e9e0b203b6eb5704c141#php83Packages.composer",

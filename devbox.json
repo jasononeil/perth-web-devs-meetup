@@ -1,7 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.12.0/.schema/devbox.schema.json",
-  "packages": ["php@latest", "php83Packages.composer@latest"],
+  "packages": ["php@latest", "php83Packages.composer@latest", "nodejs@18"],
   "include": ["plugin:php"],
+  "env": {
+    "DEVBOX_COREPACK_ENABLED": "true"
+  },
   "shell": {
     "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
     "scripts": {

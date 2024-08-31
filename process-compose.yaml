@@ -1,0 +1,14 @@
+version: "0.5"
+
+processes:
+  pnpm:
+    command: pnpm install --frozen-lockfile
+
+  php:
+    command: php artisan serve
+
+  vite:
+    command: pnpm dev
+    depends_on:
+      pnpm:
+        condition: process_completed_successfully
