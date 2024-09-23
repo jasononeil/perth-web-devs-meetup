@@ -19,4 +19,15 @@ class MeetupGroupController extends Controller
 
         return view("meetup_group.show", ["group" => $group]);
     }
+
+    public function showEvent($groupSlug, $eventSlug)
+    {
+        $group = MeetupGroup::where("slug", $groupSlug)->firstOrFail();
+        $event = $group
+            ->meetupEvents()
+            ->where("slug", $eventSlug)
+            ->firstOrFail();
+
+        return view("meetup_group.show_event", compact("group", "event"));
+    }
 }

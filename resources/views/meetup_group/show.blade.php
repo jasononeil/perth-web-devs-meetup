@@ -5,7 +5,7 @@
 <ul>
     @foreach ($group->meetupEvents as $event)
         <li>
-            {{ $event->name }} - {{ $event->start_time }}
+            <a href="{{ url("/meetups/{$group->slug}/events/{$event->slug}") }}">{{ $event->name }} - {{ $event->start_time }}</a>
             @if ($event->remainingPlaces() > 0)
                 Remaining places: {{ $event->remainingPlaces() }}
             @else

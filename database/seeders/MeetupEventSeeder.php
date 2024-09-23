@@ -22,8 +22,9 @@ class MeetupEventSeeder extends Seeder
             \App\Models\MeetupEvent::create([
                 "meetup_group_id" => $group->id,
                 "name" => "First drinks!",
+                "slug" => "first-drinks-oct-2024",
                 "description" => "This is a meetup event.",
-                "location" => "The Moon Cafe, Northbridge",
+                "location" => "Market Grounds, Perth",
                 "start_time" => "2024-09-18 17:30:00",
                 "end_time" => "2024-09-18 19:00:00",
                 "max_attendance" => 30,

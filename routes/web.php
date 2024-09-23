@@ -8,3 +8,7 @@ Route::get("/", function () {
 });
 
 Route::get("/meetups/{groupSlug}", [MeetupGroupController::class, "show"]);
+Route::get("/meetups/{groupSlug}/events/{eventSlug}", [
+    MeetupGroupController::class,
+    "showEvent",
+]);
