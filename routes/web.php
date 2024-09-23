@@ -12,3 +12,7 @@ Route::get("/meetups/{groupSlug}/events/{eventSlug}", [
     MeetupGroupController::class,
     "showEvent",
 ]);
+Route::post("/{groupSlug}/events/{eventSlug}/rsvp", [
+    MeetupGroupController::class,
+    "rsvp",
+])->name("rsvp");

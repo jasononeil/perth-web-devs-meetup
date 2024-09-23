@@ -11,6 +11,8 @@ class RSVP extends Model
 
     protected $table = "rsvps";
 
+    protected $fillable = ["meetup_event_id", "name", "email", "mobile"];
+
     public function meetupEvent()
     {
         return $this->belongsTo("App\Models\MeetupEvent");
