@@ -7,6 +7,10 @@ processes:
   php:
     command: php artisan serve
 
+  laravel_logs:
+    command: tail -f storage/logs/laravel.log
+    restart: always
+
   vite:
     command: pnpm dev
     depends_on:
