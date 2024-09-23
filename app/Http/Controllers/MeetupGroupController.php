@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\MeetupGroup;
 use App\Models\RSVP;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RsvpConfirmation;
 
 class MeetupGroupController extends Controller
 {
@@ -52,6 +54,12 @@ class MeetupGroupController extends Controller
             "email" => $request->email,
             "mobile_number" => $request->mobile_number,
         ]);
+
+        if ($request->email) {
+            Mail::to($request->email)->send(
+                new RsvpConfirmation($request->name, $event, $group)
+            );
+        }
 
         return view("meetup_group.show_event", compact("group", "event"))->with(
             "message",
