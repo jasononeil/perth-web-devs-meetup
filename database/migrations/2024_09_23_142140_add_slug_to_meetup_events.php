@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table("meetup_events", function (Blueprint $table) {
-            $table->string("slug")->after("name");
+            $table->string("slug")->default("")->after("name");
         });
     }
 
