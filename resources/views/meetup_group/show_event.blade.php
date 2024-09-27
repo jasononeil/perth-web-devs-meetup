@@ -1,3 +1,5 @@
+<link href="{{ mix('css/app.css') }}" rel="stylesheet">
+
 <h1>{{ $group->name }}</h1>
 <h2>{{ $event->name }}</h2>
 <p>Places available: {{ $event->remainingPlaces() }} out of {{ $event->max_attendance }} maximum</p>

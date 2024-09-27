@@ -1,3 +1,5 @@
+<link href="{{ mix('resources/css/app.css') }}" rel="stylesheet">
+
 <h1>{{ $group->name }}</h1>
 <p>{{ $group->description }}</p>
 
