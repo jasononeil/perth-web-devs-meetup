@@ -1,4 +1,4 @@
-<link href="{{ mix('css/app.css') }}" rel="stylesheet">
+<link href="/css/app.css" rel="stylesheet">
 
 <h1>{{ $group->name }}</h1>
 <h2>{{ $event->name }}</h2>

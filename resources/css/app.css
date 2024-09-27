@@ -1,15 +1,3 @@
-@font-face {
-    font-family: "Jost";
-    src: url("/public/fonts/jost/Jost-VariableFont_wght.ttf") format("truetype");
-    font-weight: 200 300 400 500 600 700 800;
-}
-
-body {
-    font-family: "Jost", sans-serif;
-    font-weight: 250;
-}
-
-h1 {
-    font-family: "Jost", sans-serif;
-    font-weight: 800;
-}
+// We're not using Vite yet because the Laravel docs for Vite
+// Because https://laravel.com/docs/11.x/vite seems to assume I'm building an SPA. 🤦'
+// I'm just going to use static CSS over in `public/css' for now.
