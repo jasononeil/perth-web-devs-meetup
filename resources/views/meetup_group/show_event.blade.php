@@ -1,4 +1,8 @@
-<link href="/css/app.css" rel="stylesheet">
+@extends('layouts.app')
+
+@section('title', $event->name . ' - ' . $group->name)
+
+@section('content')
 <link href="/css/meetup_group/show_event.css" rel="stylesheet">
 
 <h1>{{ $group->name }}</h1>
@@ -41,3 +45,4 @@
 @else
     Event is fully booked - join waitlist
 @endif
+@endsection
