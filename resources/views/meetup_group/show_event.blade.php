@@ -9,10 +9,9 @@
 <h2>{{ $event->name }}</h2>
 <p>Places available: {{ $event->remainingPlaces() }} out of {{ $event->max_attendance }} maximum</p>
 <p>{{ $event->description }}</p>
-
-@isset($message)
+@if (session('message'))
     <div class="alert alert-success">
-        {{ $message }}
+        {{ session('message') }}
     </div>
 @endif
 

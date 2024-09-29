@@ -11,8 +11,8 @@ Route::get("/meetups/{groupSlug}", [MeetupGroupController::class, "show"]);
 Route::get("/meetups/{groupSlug}/events/{eventSlug}", [
     MeetupGroupController::class,
     "showEvent",
-]);
-Route::post("/{groupSlug}/events/{eventSlug}/rsvp", [
+])->name("showEvent");
+Route::post("/meetups/{groupSlug}/events/{eventSlug}/rsvp", [
     MeetupGroupController::class,
     "rsvp",
 ])->name("rsvp");

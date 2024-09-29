@@ -61,9 +61,14 @@ class MeetupGroupController extends Controller
             );
         }
 
-        return view("meetup_group.show_event", compact("group", "event"))->with(
-            "message",
-            "Thank you for your RSVP! We're excited to see you there."
-        );
+        return redirect()
+            ->route("showEvent", [
+                "groupSlug" => $groupSlug,
+                "eventSlug" => $eventSlug,
+            ])
+            ->with(
+                "message",
+                "Thank you for your RSVP! We're excited to see you there."
+            );
     }
 }
