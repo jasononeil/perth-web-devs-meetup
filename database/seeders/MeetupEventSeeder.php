@@ -28,7 +28,7 @@ class MeetupEventSeeder extends Seeder
                 "location" => "Market Grounds, Perth",
                 "start_time" => "2024-10-16 17:30:00",
                 "end_time" => "2024-10-16 19:00:00",
-                "max_attendance" => 30,
+                "max_attendance" => 20,
             ]);
             \App\Models\MeetupEvent::create([
                 "meetup_group_id" => $group->id,
