@@ -9,9 +9,7 @@ The event will be held on {{ $event->date }} at {{ $event->location }}.
 
 We're excited to see you there!
 
-<x-mail::button :url="''">
-Change RSVP (TODO: Add link)
-</x-mail::button>
+If you need to change your RSVP, or have questions, just reply to this email and let me know. (I haven't automated any of that yet).
 
 Thanks,<br>
 {{ config('app.name') }}
