@@ -23,4 +23,16 @@ class MeetupEvent extends Model
     {
         return $this->max_attendance - $this->rsvps()->count();
     }
+
+    public function formattedDate()
+    {
+        return date("l, jS F Y", strtotime($this->start_time));
+    }
+
+    public function formattedTime()
+    {
+        return date("g:ia", strtotime($this->start_time)) .
+            " - " .
+            date("g:ia", strtotime($this->end_time));
+    }
 }

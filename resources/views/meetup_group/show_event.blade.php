@@ -1,4 +1,5 @@
 <link href="/css/app.css" rel="stylesheet">
+<link href="/css/meetup_group/show_event.css" rel="stylesheet">
 
 <h1>{{ $group->name }}</h1>
 <h2>{{ $event->name }}</h2>
