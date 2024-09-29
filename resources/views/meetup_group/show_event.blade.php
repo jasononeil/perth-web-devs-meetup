@@ -35,10 +35,6 @@
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" name="email">
         </div>
-        <div class="form-group">
-            <label for="mobile_number">Mobile Number</label>
-            <input type="tel" class="form-control" id="mobile_number" name="mobile_number">
-        </div>
         <button type="submit" class="btn btn-primary">RSVP</button>
     </form>
 @else
