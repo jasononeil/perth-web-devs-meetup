@@ -47,12 +47,16 @@ class MeetupGroupController extends Controller
             "mobile_number" => "nullable|required_without:email",
         ]);
 
-        RSVP::create([
-            "meetup_event_id" => $event->id,
-            "name" => $request->name,
-            "email" => $request->email,
-            "mobile_number" => $request->mobile_number,
-        ]);
+        RSVP::updateOrCreate(
+            [
+                "meetup_event_id" => $event->id,
+                "email" => $request->email,
+                "mobile_number" => $request->mobile_number,
+            ],
+            [
+                "name" => $request->name,
+            ]
+        );
 
         if ($request->has("subscribe")) {
             $group->subscribers()->firstOrCreate([
