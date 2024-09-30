@@ -12,7 +12,7 @@
 
 <main id="meetup-group-show">
     <h1>{{ $group->name }}</h1>
-    <p>{{ $group->description }}</p>
+    <p class="lede-text">{{ $group->description }}</p>
 
     <h2>Events</h2>
     <ul class="cards">

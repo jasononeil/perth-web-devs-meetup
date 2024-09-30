@@ -1,17 +1,15 @@
-#meetup-group-show {
-    .event {
-        h3 {
-            margin: 0;
-            font-weight: 400;
-            font-size: 2em;
-            transition: font-weight 0.2s ease-out;
-            a {
-                background-color: black;
-                color: white;
-            }
+.event {
+    h3 {
+        margin: 0;
+        font-weight: 400;
+        font-size: 2em;
+        transition: font-weight 0.2s ease-out;
+        a {
+            background-color: black;
+            color: white;
         }
-        &:hover h3 {
-            font-weight: 800;
-        }
+    }
+    &:hover h3 {
+        font-weight: 800;
     }
 }

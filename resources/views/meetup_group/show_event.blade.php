@@ -11,7 +11,7 @@
 <h1>{{ $group->name }}</h1>
 <a href="{{ route('showGroup', ['groupSlug' => $group->slug]) }}" class="back-link">⇠ Back to all events for this group</a>
 <h2>{{ $event->name }}</h2>
-<p>{{ $event->description }}</p>
+<p class="lede-text">{{ $event->description }}</p>
 
 <dl class="event-details">
     <dt>Date:</dt>
