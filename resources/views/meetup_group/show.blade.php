@@ -41,16 +41,20 @@
                 </dl>
             </li>
         @endforeach
-        <li>
-            <h3 class="card-title">Subscribe to hear about new events</h3>
-            <form method="POST" class="card-body">
-                <!-- route('subscribe', ['groupSlug' => $group->slug]) " -->
-                @csrf
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Subscribe</button>
+        <li class="subscribe">
+            <h3 class="card-title">Subscribe</h3>
+            <section class="card-body">
+                <p>Be the first to know about new events we're hosting.</p>
+                <form method="POST">
+                    <!-- route('subscribe', ['groupSlug' => $group->slug]) " -->
+                    @csrf
+                    <div class="app-form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="app-form-control" id="email" name="email" required>
+                    </div>
+                    <button type="submit" class="app-btn">Subscribe</button>
+                </form>
+            </section>
         </li>
     </ul>
 </main>

@@ -35,3 +35,19 @@ h2 {
 .lede-text {
     font-size: 28px;
 }
+
+.app-btn {
+    background: black;
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+}
+
+.app-form-group {
+    margin: 4px 0;
+    max-width: 320px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
