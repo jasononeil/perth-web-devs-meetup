@@ -58,15 +58,17 @@
                         </ul>
                     </div>
                 @endif
-                <p>Be the first to know about new events we're hosting.</p>
-                <form method="POST" action="{{ route('subscribe', ['groupSlug' => $group->slug]) }}">
-                    @csrf
-                    <div class="app-form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="app-form-control" id="email" name="email" required>
-                    </div>
-                    <button type="submit" class="app-btn">Subscribe</button>
-                </form>
+                @if (!session('subscribe_success'))
+                    <p>Be the first to know about new events we're hosting.</p>
+                    <form method="POST" action="{{ route('subscribe', ['groupSlug' => $group->slug]) }}">
+                        @csrf
+                        <div class="app-form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="app-form-control" id="email" name="email" required>
+                        </div>
+                        <button type="submit" class="app-btn">Subscribe</button>
+                    </form>
+                @endif
             </section>
         </li>
     </ul>

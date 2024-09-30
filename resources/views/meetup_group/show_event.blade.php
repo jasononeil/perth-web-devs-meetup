@@ -37,39 +37,41 @@
         </dl>
 
         @if ($event->remainingPlaces() > 0)
-            <form method="POST" action="{{ route('rsvp', ['groupSlug' => $group->slug, 'eventSlug' => $event->slug]) }}">
-                <h3>RSVP here</h3>
-                @csrf
-                @if (session('message'))
-                    <div class="alert alert-success">
-                        {{ session('message') }}
+            <h3>RSVP here</h3>
+            @if (session('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+            @endif
+            @if (!session('rsvp_success'))
+                <form method="POST" action="{{ route('rsvp', ['groupSlug' => $group->slug, 'eventSlug' => $event->slug]) }}">
+                    @csrf
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <div class="app-form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="app-form-control" id="name" name="name" required>
                     </div>
-                @endif
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                    <div class="app-form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="app-form-control" id="email" name="email">
                     </div>
-                @endif
-                <div class="app-form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="app-form-control" id="name" name="name" required>
-                </div>
-                <div class="app-form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="app-form-control" id="email" name="email">
-                </div>
 
-                <div class="app-form-group">
-                    <label for="subscribe">Email me about future events</label>
-                    <input type="checkbox" id="subscribe" name="subscribe">
-                </div>
+                    <div class="app-form-group">
+                        <label for="subscribe">Email me about future events</label>
+                        <input type="checkbox" id="subscribe" name="subscribe">
+                    </div>
 
-                <button type="submit" class="app-btn">RSVP</button>
-            </form>
+                    <button type="submit" class="app-btn">RSVP</button>
+                </form>
+            @endif
         @else
             <p>Event is fully booked - join waitlist</p>
         @endif

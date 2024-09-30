@@ -78,7 +78,8 @@ class MeetupGroupController extends Controller
             ->with(
                 "message",
                 "Thank you for your RSVP! We're excited to see you there."
-            );
+            )
+            ->with("rsvp_success", true);
     }
 
     public function subscribe(Request $request, $groupSlug)
@@ -98,6 +99,7 @@ class MeetupGroupController extends Controller
             ->with(
                 "message",
                 "Thanks for subscribing! We'll send you an email when we announce or next event."
-            );
+            )
+            ->with("subscribe_success", true);
     }
 }
