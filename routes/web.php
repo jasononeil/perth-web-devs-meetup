@@ -19,3 +19,8 @@ Route::post("/meetups/{groupSlug}/events/{eventSlug}/rsvp", [
     MeetupGroupController::class,
     "rsvp",
 ])->name("rsvp");
+
+Route::post("/meetups/{groupSlug}/subscribe", [
+    MeetupGroupController::class,
+    "subscribe",
+])->name("subscribe");

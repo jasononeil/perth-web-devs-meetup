@@ -44,9 +44,22 @@
         <li class="subscribe">
             <h3 class="card-title">Subscribe</h3>
             <section class="card-body">
+                @if (session('message'))
+                    <div class="alert alert-success">
+                        {{ session('message') }}
+                    </div>
+                @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <p>Be the first to know about new events we're hosting.</p>
-                <form method="POST">
-                    <!-- route('subscribe', ['groupSlug' => $group->slug]) " -->
+                <form method="POST" action="{{ route('subscribe', ['groupSlug' => $group->slug]) }}">
                     @csrf
                     <div class="app-form-group">
                         <label for="email">Email</label>

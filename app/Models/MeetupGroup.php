@@ -13,4 +13,9 @@ class MeetupGroup extends Model
     {
         return $this->hasMany("App\Models\MeetupEvent");
     }
+
+    public function subscribers()
+    {
+        return $this->hasMany(Subscriber::class);
+    }
 }

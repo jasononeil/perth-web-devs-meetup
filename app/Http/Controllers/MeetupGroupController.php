@@ -70,4 +70,35 @@ class MeetupGroupController extends Controller
                 "Thank you for your RSVP! We're excited to see you there."
             );
     }
+
+    public function subscribe(Request $request, $groupSlug)
+    {
+        $group = MeetupGroup::where("slug", $groupSlug)->firstOrFail();
+
+        $request->validate([
+            "email" => "required|email",
+        ]);
+
+        if (
+            $group
+                ->subscribers()
+                ->where("email", $request->email)
+                ->exists()
+        ) {
+            return redirect()
+                ->route("showGroup", ["groupSlug" => $groupSlug])
+                ->with("message", "You're already subscribed!");
+        }
+
+        $group->subscribers()->create([
+            "email" => $request->email,
+        ]);
+
+        return redirect()
+            ->route("showGroup", ["groupSlug" => $groupSlug])
+            ->with(
+                "message",
+                "Thanks for subscribing! We'll send you an email when we announce or next event."
+            );
+    }
 }
