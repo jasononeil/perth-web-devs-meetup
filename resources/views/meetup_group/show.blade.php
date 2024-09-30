@@ -76,12 +76,14 @@
 
     <h3>Organiser</h3>
     <ul class="avatar-list">
-        <li>
-            <figure>
-                <img src="{{ $group->organiser->profile_image_url }}" alt="{{ $group->organiser->name }}">
-                <figcaption>{{ $group->organiser->name }}</figcaption>
-            </figure>
-        </li>
+        @foreach ($group->organisers as $organiser)
+            <li>
+                <figure>
+                    <img src="{{ $organiser->profile_image_url }}" alt="{{ $organiser->name }}">
+                    <figcaption>{{ $organiser->name }}</figcaption>
+                </figure>
+            </li>
+        @endforeach
     </ul>
 </main>
 

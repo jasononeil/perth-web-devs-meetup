@@ -19,8 +19,11 @@ class MeetupGroup extends Model
         return $this->hasMany(Subscriber::class);
     }
 
-    public function organiser()
+    public function organisers()
     {
-        return $this->belongsTo("App\Models\Person");
+        return $this->belongsToMany(
+            "App\Models\Person",
+            "meetup_group_organisers"
+        );
     }
 }

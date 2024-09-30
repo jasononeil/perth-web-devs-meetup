@@ -17,17 +17,17 @@ return new class extends Migration {
             $table->string("profile_image_url");
             $table->timestamps();
         });
-        Schema::create("meetup_event_host", function (Blueprint $table) {
+        Schema::create("meetup_event_hosts", function (Blueprint $table) {
             $table->id();
             $table->foreignId("meetup_event_id")->constrained();
             $table->foreignId("person_id")->constrained();
             $table->timestamps();
         });
-        Schema::table("meetup_groups", function (Blueprint $table) {
-            $table
-                ->foreignId("organiser_id")
-                ->after("description")
-                ->constrained("people");
+        Schema::create("meetup_group_organisers", function (Blueprint $table) {
+            $table->id();
+            $table->foreignId("meetup_group_id")->constrained();
+            $table->foreignId("person_id")->constrained();
+            $table->timestamps();
         });
     }
 
@@ -37,10 +37,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists("people");
-        Schema::dropIfExists("meetup_event_host");
-        Schema::table("meetup_groups", function (Blueprint $table) {
-            $table->dropForeign(["organiser_id"]);
-            $table->dropColumn("organiser_id");
-        });
+        Schema::dropIfExists("meetup_event_hosts");
+        Schema::dropIfExists("meetup_group_organisers");
     }
 };

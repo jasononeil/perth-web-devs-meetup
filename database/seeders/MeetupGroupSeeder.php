@@ -24,11 +24,11 @@ EOD;
             "jason@jasononeil.au"
         )->firstOrFail();
 
-        MeetupGroup::create([
+        $group1 = MeetupGroup::create([
             "slug" => "perth-web-devs",
             "name" => "Perth Web Devs",
             "description" => $description,
-            "organiser_id" => $organiser->id,
         ]);
+        $group1->organisers()->attach($organiser->id);
     }
 }

@@ -50,6 +50,6 @@ class MeetupEvent extends Model
 
     public function hosts()
     {
-        return $this->belongsToMany("App\Models\Person", "meetup_event_host");
+        return $this->belongsToMany("App\Models\Person", "meetup_event_hosts");
     }
 }
