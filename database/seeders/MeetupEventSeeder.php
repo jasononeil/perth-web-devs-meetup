@@ -21,7 +21,7 @@ class MeetupEventSeeder extends Seeder
         if ($group) {
             \App\Models\MeetupEvent::create([
                 "meetup_group_id" => $group->id,
-                "name" => "First drinks!",
+                "name" => ":first-of-type(drinks)",
                 "slug" => "first-drinks-oct-2024",
                 "description" =>
                     "Casual drinks after work with others in the Perth Web Dev community.",
