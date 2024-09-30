@@ -62,6 +62,12 @@
                     <label for="email">Email</label>
                     <input type="email" class="app-form-control" id="email" name="email">
                 </div>
+
+                <div class="app-form-group">
+                    <label for="subscribe">Email me about future events</label>
+                    <input type="checkbox" id="subscribe" name="subscribe">
+                </div>
+
                 <button type="submit" class="app-btn">RSVP</button>
             </form>
         @else

@@ -54,6 +54,12 @@ class MeetupGroupController extends Controller
             "mobile_number" => $request->mobile_number,
         ]);
 
+        if ($request->has("subscribe")) {
+            $group->subscribers()->firstOrCreate([
+                "email" => $request->email,
+            ]);
+        }
+
         if ($request->email) {
             Mail::to($request->email)->send(
                 new RsvpConfirmation($request->name, $event, $group)
