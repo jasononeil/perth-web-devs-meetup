@@ -5,6 +5,7 @@
 @push('styles')
     <link href="/css/cards.css" rel="stylesheet">
     <link href="/css/event_details.css" rel="stylesheet">
+    <link href="/css/avatar_list.css" rel="stylesheet">
     <link href="/css/meetup_group/show.css" rel="stylesheet">
 @endpush
 
@@ -70,6 +71,16 @@
                     </form>
                 @endif
             </section>
+        </li>
+    </ul>
+
+    <h3>Organiser</h3>
+    <ul class="avatar-list">
+        <li>
+            <figure>
+                <img src="{{ $group->organiser->profile_image_url }}" alt="{{ $group->organiser->name }}">
+                <figcaption>{{ $group->organiser->name }}</figcaption>
+            </figure>
         </li>
     </ul>
 </main>

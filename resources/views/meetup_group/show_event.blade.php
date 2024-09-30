@@ -5,6 +5,7 @@
 @push('styles')
     <link href="/css/meetup_group/show_event.css" rel="stylesheet">
     <link href="/css/event_details.css" rel="stylesheet">
+    <link href="/css/avatar_list.css" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -15,6 +16,17 @@
     <section>
         <h2>{{ $event->name }}</h2>
         <div class="lede-text">{!! \Michelf\Markdown::defaultTransform($event->description) !!}</div>
+        <h3>Hosts</h3>
+        <ul class="avatar-list">
+            @foreach ($event->hosts as $host)
+                <li>
+                    <figure>
+                        <img src="{{ $host->profile_image_url }}" alt="{{ $host->name }}">
+                        <figcaption>{{ $host->name }}</figcaption>
+                    </figure>
+                </li>
+            @endforeach
+        </ul>
     </section>
     <section>
         <h3>Details</h3>
