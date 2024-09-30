@@ -48,8 +48,8 @@
             </dd>
         </dl>
 
-        @if ($event->remainingPlaces() > 0)
-            <h3>RSVP here</h3>
+        <h3>RSVP here</h3>
+        @if ($event->accepting_rsvps && $event->remainingPlaces() > 0)
             @if (session('message'))
                 <div class="alert alert-success">
                     {{ session('message') }}
@@ -85,7 +85,13 @@
                 </form>
             @endif
         @else
-            <p>Event is fully booked - join waitlist</p>
+            @if (!$event->accepting_rsvps)
+            <p>RSVPs are not open for this event yet. <a href="{{ route('showGroup', ['groupSlug' => $group->slug]) }}">Subscribe to our group</a> to be notified when RSVPs open.</p>
+            @endif
+            @if ($event->remainingPlaces() <= 0)
+                <p>Event is fully booked - join waitlist</p>
+
+            @endif
         @endif
     </section>
 </div>

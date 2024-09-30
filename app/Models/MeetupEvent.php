@@ -9,6 +9,18 @@ class MeetupEvent extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "meetup_group_id",
+        "name",
+        "slug",
+        "description",
+        "location",
+        "start_time",
+        "end_time",
+        "max_attendance",
+        "accepting_rsvps",
+    ];
+
     public function meetupGroup()
     {
         return $this->belongsTo("App\Models\MeetupGroup");

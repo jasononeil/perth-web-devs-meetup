@@ -52,6 +52,7 @@ EOD;
             "start_time" => "2024-10-16 17:30:00",
             "end_time" => "2024-10-16 19:00:00",
             "max_attendance" => 20,
+            "accepting_rsvps" => true,
         ]);
         $event1->hosts()->attach($host->id);
 
@@ -64,6 +65,7 @@ EOD;
             "start_time" => "2024-11-13 17:30:00",
             "end_time" => "2024-11-13 19:30:00",
             "max_attendance" => 30,
+            "accepting_rsvps" => false,
         ]);
         $event2->hosts()->attach($host->id);
     }
