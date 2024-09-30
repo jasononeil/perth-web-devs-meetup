@@ -12,7 +12,7 @@
 
 <main id="meetup-group-show">
     <h1>{{ $group->name }}</h1>
-    <p class="lede-text">{{ $group->description }}</p>
+    <section class="lede-text">{!! \Michelf\Markdown::defaultTransform($group->description) !!}</section>
 
     <h2>Events</h2>
     <ul class="cards">

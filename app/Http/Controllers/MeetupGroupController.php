@@ -30,7 +30,6 @@ class MeetupGroupController extends Controller
             ->meetupEvents()
             ->where("slug", $eventSlug)
             ->firstOrFail();
-
         return view("meetup_group.show_event", compact("group", "event"));
     }
 
