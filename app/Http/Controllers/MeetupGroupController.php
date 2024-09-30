@@ -85,18 +85,7 @@ class MeetupGroupController extends Controller
             "email" => "required|email",
         ]);
 
-        if (
-            $group
-                ->subscribers()
-                ->where("email", $request->email)
-                ->exists()
-        ) {
-            return redirect()
-                ->route("showGroup", ["groupSlug" => $groupSlug])
-                ->with("message", "You're already subscribed!");
-        }
-
-        $group->subscribers()->create([
+        $group->subscribers()->firstOrCreate([
             "email" => $request->email,
         ]);
 
