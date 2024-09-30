@@ -5,6 +5,7 @@
 @section('content')
 <link href="/css/app.css" rel="stylesheet">
 <link href="/css/cards.css" rel="stylesheet">
+<link href="/css/event_details.css" rel="stylesheet">
 <link href="/css/meetup_group/show.css" rel="stylesheet">
 
 <main id="meetup-group-show">

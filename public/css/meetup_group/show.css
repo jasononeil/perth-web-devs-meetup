@@ -14,18 +14,4 @@
             font-weight: 800;
         }
     }
-
-    .event-details {
-        display: grid;
-        grid-template-columns: max-content auto;
-        gap: 1em;
-
-        dt {
-            font-weight: bold;
-            margin-right: 0.5em;
-        }
-        dd {
-            margin-left: 0;
-        }
-    }
 }
