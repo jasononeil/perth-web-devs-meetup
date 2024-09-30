@@ -2,10 +2,12 @@
 
 @section('title', $event->name . ' - ' . $group->name)
 
-@section('content')
-<link href="/css/meetup_group/show_event.css" rel="stylesheet">
-<link href="/css/event_details.css" rel="stylesheet">
+@push('styles')
+    <link href="/css/meetup_group/show_event.css" rel="stylesheet">
+    <link href="/css/event_details.css" rel="stylesheet">
+@endpush
 
+@section('content')
 <h1>{{ $group->name }}</h1>
 <a href="{{ route('showGroup', ['groupSlug' => $group->slug]) }}">⇠ Back to all events for this group</a>
 <h2>{{ $event->name }}</h2>
