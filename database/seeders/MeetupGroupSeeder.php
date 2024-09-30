@@ -19,11 +19,16 @@ A Perth meetup group for web developers, software engineers, designers, PMs and 
 We'll have a mix of social catch-ups and meetups with technical talks or discussions about our industry.
 EOD;
 
+        $organiser = \App\Models\Person::where(
+            "email",
+            "jason@jasononeil.au"
+        )->firstOrFail();
+
         MeetupGroup::create([
             "slug" => "perth-web-devs",
             "name" => "Perth Web Devs",
             "description" => $description,
-            // Add any other fields you need here.
+            "organiser_id" => $organiser->id,
         ]);
     }
 }
