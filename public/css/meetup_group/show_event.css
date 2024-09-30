@@ -1,0 +1,12 @@
+.back-link {
+    margin-top: 20px;
+    margin-left: 10px;
+    font-size: 20px;
+    color: #000;
+    /** Make bold on hover **/
+    transition: font-weight 0.2s ease-out;
+    font-weight: 200;
+    &:hover {
+        font-weight: 800;
+    }
+}

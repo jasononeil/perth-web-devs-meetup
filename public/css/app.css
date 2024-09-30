@@ -20,6 +20,11 @@ h1 {
     margin-bottom: 12px;
     rotate: -2deg;
     text-align: center;
+
+    /** Workaround for the rotation making it hard to click other things **/
+    position: relative;
+    top: 0;
+    z-index: -1;
 }
 
 h2 {

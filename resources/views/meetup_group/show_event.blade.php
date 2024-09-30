@@ -9,7 +9,7 @@
 
 @section('content')
 <h1>{{ $group->name }}</h1>
-<a href="{{ route('showGroup', ['groupSlug' => $group->slug]) }}">⇠ Back to all events for this group</a>
+<a href="{{ route('showGroup', ['groupSlug' => $group->slug]) }}" class="back-link">⇠ Back to all events for this group</a>
 <h2>{{ $event->name }}</h2>
 <p>{{ $event->description }}</p>
 
