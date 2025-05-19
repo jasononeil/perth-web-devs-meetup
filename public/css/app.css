@@ -7,7 +7,8 @@
 body {
     font-family: "Jost", sans-serif;
     font-weight: 250;
-    margin: 2em;
+    margin: 2em auto;
+    max-width: 1600px;
 
     @media (min-width: 768px) {
         margin: 4em 10vw;
