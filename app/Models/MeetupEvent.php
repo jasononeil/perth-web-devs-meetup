@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class MeetupEvent extends Model
 {
@@ -51,5 +52,10 @@ class MeetupEvent extends Model
     public function hosts()
     {
         return $this->belongsToMany("App\Models\Person", "meetup_event_hosts");
+    }
+
+    public function isArchived(): bool
+    {
+        return Carbon::parse($this->start_time)->isPast();
     }
 }

@@ -23,3 +23,15 @@
         font-size: 28px;
     }
 }
+
+.archived-badge {
+    display: inline-block;
+    background: #eee;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-size: 0.7em;
+    color: #666;
+    font-weight: normal;
+    vertical-align: middle;
+}

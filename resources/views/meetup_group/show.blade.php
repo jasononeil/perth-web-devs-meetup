@@ -20,7 +20,12 @@
         @foreach ($group->meetupEvents as $event)
             <li class="event">
                 <h3 class="card-title">
-                    <a href="{{ url("/meetups/{$group->slug}/events/{$event->slug}") }}">{{ $event->name }}</a>
+                    <a href="{{ url("/meetups/{$group->slug}/events/{$event->slug}") }}">
+                        {{ $event->name }}
+                        @if ($event->isArchived())
+                            <span class="archived-badge">(Archived)</span>
+                        @endif
+                    </a>
                 </h3>
 
                 <dl class="event-details card-body">
