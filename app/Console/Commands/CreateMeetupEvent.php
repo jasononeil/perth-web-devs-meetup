@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\MeetupEvent;
 use App\Models\MeetupGroup;
+use App\Models\Person;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
@@ -60,6 +61,39 @@ class CreateMeetupEvent extends Command
         ]);
 
         $event->save();
+
+        // Handle host selection
+        $people = Person::all();
+        if ($people->isNotEmpty()) {
+            $hostChoices = $people->pluck('name', 'id')->toArray();
+            $hostChoices['0'] = 'Done adding hosts';
+            
+            $this->info('Select hosts for the event (choose "Done adding hosts" when finished):');
+            $selectedHosts = [];
+            
+            while (true) {
+                $hostChoice = $this->choice(
+                    'Select a host:',
+                    $hostChoices
+                );
+                
+                if ($hostChoice === 'Done adding hosts') {
+                    break;
+                }
+                
+                $hostId = array_search($hostChoice, $hostChoices);
+                if (!in_array($hostId, $selectedHosts)) {
+                    $selectedHosts[] = $hostId;
+                    $this->info("Added {$hostChoice} as a host");
+                }
+            }
+            
+            if (!empty($selectedHosts)) {
+                $event->hosts()->attach($selectedHosts);
+            }
+        } else {
+            $this->warn('No people available to select as hosts. Add people to the database first.');
+        }
 
         $this->info('Event created successfully!');
         $this->table(
