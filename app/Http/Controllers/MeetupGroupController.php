@@ -13,7 +13,9 @@ class MeetupGroupController extends Controller
     public function show($groupSlug)
     {
         $group = MeetupGroup::where("slug", $groupSlug)
-            ->with("meetupEvents")
+            ->with(['meetupEvents' => function($query) {
+                $query->where('start_time', '>', now());
+            }])
             ->first();
 
         if (!$group) {
