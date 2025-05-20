@@ -88,6 +88,17 @@ class MeetupGroupController extends Controller
     {
         $group = MeetupGroup::where("slug", $groupSlug)->firstOrFail();
 
+        // Honeypot check - if the bot filled out the hidden field, silently redirect
+        if ($request->filled('website')) {
+            return redirect()->route("showGroup", ["groupSlug" => $groupSlug]);
+        }
+
+        // Time check - form submissions faster than 2 seconds are likely bots
+        $formRenderedAt = $request->input('_rendered_at');
+        if ($formRenderedAt && (time() - intval($formRenderedAt) < 2)) {
+            return redirect()->route("showGroup", ["groupSlug" => $groupSlug]);
+        }
+
         $request->validate([
             "email" => "required|email",
         ]);
@@ -100,7 +111,7 @@ class MeetupGroupController extends Controller
             ->route("showGroup", ["groupSlug" => $groupSlug])
             ->with(
                 "message",
-                "Thanks for subscribing! We'll send you an email when we announce or next event."
+                "Thanks for subscribing! We'll send you an email when we announce our next event."
             )
             ->with("subscribe_success", true);
     }
