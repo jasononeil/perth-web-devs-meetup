@@ -6,6 +6,7 @@ use App\Models\MeetupEvent;
 use App\Models\Person;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 
 class EditMeetupEvent extends Command
@@ -35,8 +36,16 @@ class EditMeetupEvent extends Command
         $event->name = $name;
         $event->slug = Str::slug($name);
 
-        $event->description = $this->ask('Event description:', $event->description);
-        $event->location = $this->ask('Event location:', $event->location);
+        // Launch editor for description
+        $tempFile = tempnam(sys_get_temp_dir(), "meetup-description");
+        file_put_contents($tempFile, $event->description);
+        $this->info("Opening editor for event description...");
+        $editor = getenv("EDITOR") ?: "vim";
+        Process::forever()->tty()->run(sprintf("%s %s", $editor, $tempFile));
+        $description = trim(file_get_contents($tempFile));
+        unlink($tempFile);
+        $event->description = $description ?: $event->description;
+        $event->location = $this->ask("Event location:", $event->location);
 
         // Date and time
         $startTime = Carbon::parse($event->start_time);

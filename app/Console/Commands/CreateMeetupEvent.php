@@ -7,6 +7,7 @@ use App\Models\MeetupGroup;
 use App\Models\Person;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 
 class CreateMeetupEvent extends Command
@@ -33,7 +34,15 @@ class CreateMeetupEvent extends Command
         // Collect event details
         $name = $this->ask('Event name:');
         $slug = Str::slug($name);
-        $description = $this->ask('Event description:');
+
+        // Launch editor for description
+        $tempFile = tempnam(sys_get_temp_dir(), 'meetup-description');
+        $this->info('Opening editor for event description...');
+        $editor = getenv('EDITOR') ?: 'vim';
+        Process::forever()->tty()->run(sprintf('%s %s', $editor, $tempFile));
+        $description = trim(file_get_contents($tempFile));
+        unlink($tempFile);
+
         $location = $this->ask('Event location:');
         
         // Date and time
