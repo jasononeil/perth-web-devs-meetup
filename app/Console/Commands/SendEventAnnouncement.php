@@ -12,7 +12,7 @@ use Carbon\Carbon;
 
 class SendEventAnnouncement extends Command
 {
-    protected $signature = "mail:event-announcement";
+    protected $signature = "meetup:event-announcement";
     protected $description = "Send announcement emails for a new event to all subscribers";
 
     public function handle()

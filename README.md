@@ -15,6 +15,10 @@ To start developing:
 
 This will start a server at `http://localhost:8000`.
 
+## Commands
+
+Run `php artisan meetup` to see available commands for this project.
+
 ## Laravel
 
 This project uses [Laravel](https://laravel.com). You can read the Laravel project readme [here](./README-laravel.md).
