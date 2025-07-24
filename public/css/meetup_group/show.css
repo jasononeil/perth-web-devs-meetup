@@ -4,13 +4,48 @@
         font-weight: 400;
         font-size: 2em;
         transition: font-weight 0.2s ease-out;
+
         a {
             background-color: black;
             color: white;
         }
     }
+
     &:hover h3 {
         font-weight: 800;
+    }
+}
+
+.event.archived {
+    opacity: 0.7;
+
+    h3 {
+        font-size: 1.5em;
+
+        a {
+            color: white;
+        }
+    }
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.archived-events {
+    margin-top: 2rem;
+
+    li:first-child {
+        grid-column: auto;
+    }
+}
+
+.no-events {
+    p {
+        font-style: italic;
+        color: #666;
+        text-align: center;
+        padding: 2rem;
     }
 }
 
@@ -19,6 +54,7 @@
         font-size: 2em;
         font-weight: 400;
     }
+
     p {
         margin-top: 0;
     }

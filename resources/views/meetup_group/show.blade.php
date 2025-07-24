@@ -15,9 +15,9 @@
     <h1>{{ $group->name }}</h1>
     <section class="lede-text">{!! \Michelf\Markdown::defaultTransform($group->description) !!}</section>
 
-    <h2>Events</h2>
+    <h2>Upcoming Events</h2>
     <ul class="cards">
-        @foreach ($group->meetupEvents as $event)
+        @forelse ($upcomingEvents as $event)
             <li class="event">
                 <h3 class="card-title">
                     <a href="{{ url("/meetups/{$group->slug}/events/{$event->slug}") }}">
@@ -43,7 +43,11 @@
                     </dd>
                 </dl>
             </li>
-        @endforeach
+        @empty
+            <li class="no-events">
+                <p>No upcoming events scheduled at the moment.</p>
+            </li>
+        @endforelse
         <li class="subscribe">
             <h3 class="card-title">Subscribe</h3>
             <section class="card-body">
@@ -80,6 +84,32 @@
             </section>
         </li>
     </ul>
+
+    @if($archivedEvents->count() > 0)
+        <h2>Past Events</h2>
+        <ul class="cards archived-events">
+            @foreach ($archivedEvents as $event)
+                <li class="event archived">
+                    <h3 class="card-title">
+                        <a href="{{ url("/meetups/{$group->slug}/events/{$event->slug}") }}">
+                            {{ $event->name }}
+                        </a>
+                    </h3>
+
+                    <dl class="event-details card-body">
+                        <dt>Date:</dt>
+                        <dd>{{ $event->formattedDate() }}</dd>
+                        <dt>Time:</dt>
+                        <dd>{{ $event->formattedTime() }}</dd>
+                        <dt>Location:</dt>
+                        <dd>{{ $event->location }}</dd>
+                        <dt>Attendees:</dt>
+                        <dd>{{ $event->rsvps()->count() }} people attended</dd>
+                    </dl>
+                </li>
+            @endforeach
+        </ul>
+    @endif
 
     <h3>Organiser</h3>
     <ul class="avatar-list">

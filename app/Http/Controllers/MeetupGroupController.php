@@ -14,7 +14,7 @@ class MeetupGroupController extends Controller
     {
         $group = MeetupGroup::where("slug", $groupSlug)
             ->with(['meetupEvents' => function($query) {
-                $query->where('start_time', '>', now());
+                $query->orderBy('start_time', 'desc');
             }])
             ->first();
 
@@ -22,7 +22,20 @@ class MeetupGroupController extends Controller
             abort(404);
         }
 
-        return view("meetup_group.show", ["group" => $group]);
+        // Separate upcoming and archived events
+        $upcomingEvents = $group->meetupEvents->filter(function($event) {
+            return !$event->isArchived();
+        });
+
+        $archivedEvents = $group->meetupEvents->filter(function($event) {
+            return $event->isArchived();
+        });
+
+        return view("meetup_group.show", [
+            "group" => $group,
+            "upcomingEvents" => $upcomingEvents,
+            "archivedEvents" => $archivedEvents
+        ]);
     }
 
     public function showEvent($groupSlug, $eventSlug)
