@@ -44,9 +44,11 @@ class MeetupGroupController extends Controller
             ->firstOrFail();
 
         $request->validate([
-            "name" => "required",
+            "name" => "required|not_regex:/http/i",
             "email" => "nullable|email|required_without:mobile_number",
             "mobile_number" => "nullable|required_without:email",
+        ], [
+            "name.not_regex" => "We don't allow any submissions if your name contains the substring `http`. Sorry if you validly have this as your name!"
         ]);
 
         RSVP::updateOrCreate(
