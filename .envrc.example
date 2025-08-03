@@ -1,0 +1,4 @@
+# See https://aider.chat/docs/llms.html
+
+# Anthropic API key for dev agent tooling
+export ANTHROPIC_API_KEY="<API KEY HERE>"
