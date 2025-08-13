@@ -27,10 +27,6 @@ class EventBump extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(
-                "jason@jasononeil.au",
-                "Jason O'Neil (Perth Web Devs meetup)"
-            ),
             subject: "Reminder: {$this->event->name} ({$this->group->name})"
         );
     }
