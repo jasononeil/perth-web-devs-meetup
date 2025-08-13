@@ -11,7 +11,7 @@ Not long now! We're excited you're coming and look forward to seeing you there.
 
 {{ $event->description }}
 
-<x-mail::button :url="$rsvpUrl">
+<x-mail::button :url="$eventUrl">
 View Event Details
 </x-mail::button>
 
