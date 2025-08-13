@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Mail\NewEventAnnouncement;
 use App\Models\MeetupEvent;
+use App\Models\MeetupEventMailLog;
+use App\Models\MeetupEventMessage;
 use App\Models\MeetupGroup;
 use App\Models\Subscriber;
 use Illuminate\Console\Command;
@@ -105,7 +107,14 @@ class SendEventAnnouncement extends Command
             return 0;
         }
 
-        // Send emails
+        // Create the message record
+        $messageRecord = MeetupEventMessage::create([
+            "meetup_event_id" => $event->id,
+            "message_type" => "announcement",
+            "custom_message" => null,
+        ]);
+
+        // Send emails and log each one
         $bar = $this->output->createProgressBar($subscribers->count());
         $bar->start();
 
@@ -113,6 +122,14 @@ class SendEventAnnouncement extends Command
             Mail::to($subscriber->email)->send(
                 new NewEventAnnouncement($event, $group, $rsvpUrl),
             );
+
+            // Log the email send
+            MeetupEventMailLog::create([
+                "meetup_event_message_id" => $messageRecord->id,
+                "recipient_email" => $subscriber->email,
+                "sent_at" => Carbon::now(),
+            ]);
+
             $bar->advance();
         }
 
