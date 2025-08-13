@@ -12,43 +12,30 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class NewEventAnnouncement extends Mailable
+class EventBump extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct(
         public MeetupEvent $event,
         public MeetupGroup $group,
         public string $rsvpUrl,
+        public string $customMessage,
     ) {
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Upcoming Event: {$this->event->name} ({$this->group->name})"
+            subject: "Reminder: {$this->event->name} ({$this->group->name})"
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
-        return new Content(markdown: "emails.new_event_announcement");
+        return new Content(markdown: "emails.event_bump");
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
     public function attachments(): array
     {
         return [];

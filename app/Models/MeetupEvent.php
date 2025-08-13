@@ -49,6 +49,11 @@ class MeetupEvent extends Model
             date("g:ia", strtotime($this->end_time));
     }
 
+    public function dayOfWeek()
+    {
+        return date("l", strtotime($this->start_time));
+    }
+
     public function hosts()
     {
         return $this->belongsToMany("App\Models\Person", "meetup_event_hosts");

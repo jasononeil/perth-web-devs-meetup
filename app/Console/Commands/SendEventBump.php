@@ -2,20 +2,22 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\NewEventAnnouncement;
+use App\Mail\EventBump;
 use App\Models\MeetupEvent;
 use App\Models\MeetupEventMailLog;
 use App\Models\MeetupEventMessage;
 use App\Models\MeetupGroup;
+use App\Models\RSVP;
 use App\Models\Subscriber;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Process;
 
-class SendEventAnnouncement extends Command
+class SendEventBump extends Command
 {
-    protected $signature = "meetup:event-announcement";
-    protected $description = "Send announcement emails for a new event to all subscribers";
+    protected $signature = "meetup:event-bump";
+    protected $description = "Send bump emails to subscribers who haven't RSVP'd yet";
 
     public function handle()
     {
@@ -47,7 +49,7 @@ class SendEventAnnouncement extends Command
 
         // Choose an event
         $event = $this->choice(
-            "Which event would you like to announce?",
+            "Which event would you like to send bump emails for?",
             $upcomingEvents
                 ->map(
                     fn($event) => "{$event->name} ({$event->formattedDate()})",
@@ -58,6 +60,35 @@ class SendEventAnnouncement extends Command
         $event = $upcomingEvents
             ->filter(fn($e) => "{$e->name} ({$e->formattedDate()})" === $event)
             ->first();
+
+        // Get subscribers who haven't RSVP'd
+        $rsvpEmails = RSVP::where("meetup_event_id", $event->id)
+            ->pluck("email")
+            ->toArray();
+
+        $subscribers = Subscriber::where("meetup_group_id", $group->id)
+            ->whereNotIn("email", $rsvpEmails)
+            ->get();
+
+        if ($subscribers->isEmpty()) {
+            $this->info(
+                "No subscribers need bump emails - everyone has already RSVP'd!",
+            );
+            return 0;
+        }
+
+        // Launch editor for custom message
+        $tempFile = tempnam(sys_get_temp_dir(), "meetup-bump-message");
+        $this->info("Opening editor for custom bump message...");
+        $editor = getenv("EDITOR") ?: "vim";
+        Process::forever()->tty()->run(sprintf("%s %s", $editor, $tempFile));
+        $customMessage = trim(file_get_contents($tempFile));
+        unlink($tempFile);
+
+        if (empty($customMessage)) {
+            $this->error("Custom message is required for bump emails");
+            return 1;
+        }
 
         // Get the RSVP URL
         $rsvpUrl = url("/meetups/{$group->slug}/events/{$event->slug}");
@@ -70,7 +101,7 @@ class SendEventAnnouncement extends Command
         if ($testEmail) {
             $this->info("Sending test email to {$testEmail}...");
             Mail::to($testEmail)->send(
-                new NewEventAnnouncement($event, $group, $rsvpUrl),
+                new EventBump($event, $group, $rsvpUrl, $customMessage),
             );
 
             if (
@@ -83,16 +114,10 @@ class SendEventAnnouncement extends Command
             }
         }
 
-        // Get subscribers
-        $subscribers = Subscriber::where("meetup_group_id", $group->id)->get();
-
-        if ($subscribers->isEmpty()) {
-            $this->error("No subscribers found for this group");
-            return 1;
-        }
-
         // Show subscriber count and confirm
-        $this->info("Found {$subscribers->count()} subscribers:");
+        $this->info(
+            "Found {$subscribers->count()} subscribers who need bump emails:",
+        );
         $this->table(
             ["Email"],
             $subscribers->map(fn($sub) => [$sub->email])->toArray(),
@@ -100,7 +125,7 @@ class SendEventAnnouncement extends Command
 
         if (
             !$this->confirm(
-                "Do you want to send the announcement to these subscribers?",
+                "Do you want to send the bump message to these subscribers?",
             )
         ) {
             $this->info("Operation cancelled.");
@@ -110,8 +135,8 @@ class SendEventAnnouncement extends Command
         // Create the message record
         $messageRecord = MeetupEventMessage::create([
             "meetup_event_id" => $event->id,
-            "message_type" => "announcement",
-            "custom_message" => null,
+            "message_type" => "bump",
+            "custom_message" => $customMessage,
         ]);
 
         // Send emails and log each one
@@ -120,7 +145,7 @@ class SendEventAnnouncement extends Command
 
         foreach ($subscribers as $subscriber) {
             Mail::to($subscriber->email)->send(
-                new NewEventAnnouncement($event, $group, $rsvpUrl),
+                new EventBump($event, $group, $rsvpUrl, $customMessage),
             );
 
             // Log the email send
@@ -136,7 +161,7 @@ class SendEventAnnouncement extends Command
         $bar->finish();
         $this->newLine(2);
         $this->info(
-            "{$subscribers->count()} Announcement emails have been sent successfully!",
+            "{$subscribers->count()} Bump emails have been sent successfully!",
         );
 
         return 0;

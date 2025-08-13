@@ -32,11 +32,6 @@ class RsvpConfirmation extends Mailable
      */
     public function envelope(): Envelope
     {
-        from:
-        new Address(
-            "jason@jasononeil.au",
-            "Jason O'Neil (Perth Web Devs meetup)"
-        );
         return new Envelope(
             subject: "RSVP Confirmed: {$this->event->name} ({$this->group->name})"
         );
