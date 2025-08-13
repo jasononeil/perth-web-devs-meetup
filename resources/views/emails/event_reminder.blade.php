@@ -1,5 +1,5 @@
 <x-mail::message>
-# See you {{ $event->date->format('l') }}: {{ $event->name }}
+# See you {{ $event->dayOfWeek() }}: {{ $event->name }}
 
 Not long now! We're excited you're coming and look forward to seeing you there.
 

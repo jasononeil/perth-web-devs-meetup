@@ -23,9 +23,7 @@ class EventReminder extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "{$this->event->date->format(
-                "l",
-            )}: {$this->event->name} ({$this->group->name})",
+            subject: "See you {$this->event->dayOfWeek()}: {$this->event->name} ({$this->group->name})",
         );
     }
 
