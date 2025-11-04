@@ -52,7 +52,7 @@
             <h3 class="card-title">Subscribe</h3>
             <section class="card-body">
                 @if (session('message'))
-                    <div class="alert alert-success">
+                    <div class="alert {{ session('subscribe_pending') ? 'alert-info' : 'alert-success' }}">
                         {{ session('message') }}
                     </div>
                 @endif
@@ -65,7 +65,7 @@
                         </ul>
                     </div>
                 @endif
-                @if (!session('subscribe_success'))
+                @if (!session('subscribe_success') && !session('subscribe_pending'))
                     <p>Be the first to know about new events we're hosting.</p>
                     <form method="POST" action="{{ route('subscribe', ['groupSlug' => $group->slug]) }}">
                         @csrf
@@ -104,7 +104,7 @@
                         <dt>Location:</dt>
                         <dd>{{ $event->location }}</dd>
                         <dt>Attendees:</dt>
-                        <dd>{{ $event->rsvps()->count() }} people attended</dd>
+                        <dd>{{ $event->rsvps()->verified()->count() }} people attended</dd>
                     </dl>
                 </li>
             @endforeach

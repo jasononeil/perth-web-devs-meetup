@@ -56,11 +56,11 @@
         <h3>RSVP here</h3>
         @if (!$event->isArchived() && $event->accepting_rsvps && $event->remainingPlaces() > 0)
             @if (session('message'))
-                <div class="alert alert-success">
+                <div class="alert {{ session('rsvp_pending') ? 'alert-info' : 'alert-success' }}">
                     {{ session('message') }}
                 </div>
             @endif
-            @if (!session('rsvp_success'))
+            @if (!session('rsvp_success') && !session('rsvp_pending'))
                 <form method="POST" action="{{ route('rsvp', ['groupSlug' => $group->slug, 'eventSlug' => $event->slug]) }}">
                     @csrf
                     @if ($errors->any())
