@@ -30,6 +30,12 @@ class Person extends Model
     {
         $this->email_verified_at = now();
         $this->save();
+
+        // Confirm all RSVPs and subscriptions for this email
+        RSVP::where("email", $this->email)->update(["is_confirmed" => true]);
+        Subscriber::where("email", $this->email)->update([
+            "is_confirmed" => true,
+        ]);
     }
 
     public static function findOrCreateByEmail(string $email): Person

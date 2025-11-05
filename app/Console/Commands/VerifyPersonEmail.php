@@ -3,8 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\Person;
-use App\Models\RSVP;
-use App\Models\Subscriber;
 use Illuminate\Console\Command;
 
 class VerifyPersonEmail extends Command
@@ -42,10 +40,6 @@ class VerifyPersonEmail extends Command
         }
 
         $person->markAsVerified();
-
-        // Mark all RSVPs and subscriptions as confirmed
-        RSVP::where("email", $email)->update(["is_confirmed" => true]);
-        Subscriber::where("email", $email)->update(["is_confirmed" => true]);
 
         $this->info("Email verified: {$email}");
         return 0;
