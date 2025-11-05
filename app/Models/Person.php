@@ -10,10 +10,15 @@ class Person extends Model
 
     protected $table = "people";
 
-    protected $fillable = ["name", "email", "profile_image_url", "email_verified_at"];
+    protected $fillable = [
+        "name",
+        "email",
+        "profile_image_url",
+        "email_verified_at",
+    ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        "email_verified_at" => "datetime",
     ];
 
     public function isVerified(): bool
@@ -30,8 +35,8 @@ class Person extends Model
     public static function findOrCreateByEmail(string $email): Person
     {
         return self::firstOrCreate(
-            ['email' => $email],
-            ['name' => '', 'profile_image_url' => '']
+            ["email" => $email],
+            ["name" => "", "profile_image_url" => ""],
         );
     }
 }
