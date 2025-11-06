@@ -71,7 +71,7 @@
                         @csrf
                         <input type="hidden" name="_rendered_at" value="{{ time() }}">
                         <div style="position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important;">
-                            <label for="website">Please leave this field empty</label>
+                            <label for="website">Please leave this field empty. Apologies to those using screen readers, we use this as a honeypot field to catch bots without resorting to Captchas.</label>
                             <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
                         </div>
                         <div class="app-form-group">
