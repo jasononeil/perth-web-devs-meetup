@@ -103,31 +103,28 @@ class MeetupGroupController extends Controller
                     new RsvpConfirmation($request->name, $event, $group),
                 );
 
-                return redirect()
-                    ->route("showEvent", [
-                        "groupSlug" => $group->slug,
-                        "eventSlug" => $event->slug,
-                    ])
-                    ->with(
-                        "message",
-                        "Thank you for your RSVP! We're excited to see you there.",
-                    )
-                    ->with("rsvp_success", true);
+                $rsvp_success = true;
+                $rsvp_pending = false;
+                $message =
+                    "Thank you for your RSVP! We're excited to see you there.";
             } else {
                 // Send verification email
                 $person->sendVerificationEmail("rsvp", $rsvp, $group, $event);
 
-                return redirect()
-                    ->route("showEvent", [
-                        "groupSlug" => $group->slug,
-                        "eventSlug" => $event->slug,
-                    ])
-                    ->with(
-                        "message",
-                        "Please check your email to verify your address and complete your RSVP. (Sorry we need to do this - it's because spammers keep filling out fake RSVPs!)",
-                    )
-                    ->with("rsvp_pending", true);
+                $rsvp_success = false;
+                $rsvp_pending = true;
+                $message =
+                    "Please check your email to verify your address and complete your RSVP. (Sorry we need to do this - it's because spammers keep filling out fake RSVPs!)";
             }
+
+            return redirect()
+                ->route("showEvent", [
+                    "groupSlug" => $group->slug,
+                    "eventSlug" => $event->slug,
+                ])
+                ->with("message", $message)
+                ->with("rsvp_success", $rsvp_success)
+                ->with("rsvp_pending", $rsvp_pending);
         } else {
             // Mobile-only RSVP not supported yet
             abort(
