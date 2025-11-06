@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,17 +10,16 @@ class Subscriber extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['email', 'is_confirmed'];
+    protected $fillable = ["email", "is_confirmed"];
 
     public function meetupGroup()
     {
         return $this->belongsTo(MeetupGroup::class);
     }
 
-    #[Scope]
-    protected function confirmed(Builder $query): void
+    public function scopeConfirmed(Builder $query): void
     {
-        $query->where('is_confirmed', true);
+        $query->where("is_confirmed", true);
     }
 
     public function isConfirmed(): bool

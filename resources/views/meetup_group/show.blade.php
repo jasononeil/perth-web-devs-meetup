@@ -104,7 +104,7 @@
                         <dt>Location:</dt>
                         <dd>{{ $event->location }}</dd>
                         <dt>Attendees:</dt>
-                        <dd>{{ $event->rsvps()->verified()->count() }} people attended</dd>
+                        <dd>{{ $event->rsvps()->confirmed()->count() }} people attended</dd>
                     </dl>
                 </li>
             @endforeach
