@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\MeetupGroup;
+use App\Models\MeetupEvent;
 use App\Models\RSVP;
 use App\Models\Person;
 use App\Models\Subscriber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 use App\Mail\RsvpConfirmation;
-use App\Mail\VerifyEmail;
 
 class MeetupGroupController extends Controller
 {
@@ -74,28 +73,67 @@ class MeetupGroupController extends Controller
             ],
         );
 
-        if ($request->has("subscribe")) {
-            $group->subscribers()->firstOrCreate([
-                "email" => $request->email,
-            ]);
-        }
-
         if ($request->email) {
-            Mail::to($request->email)->send(
-                new RsvpConfirmation($request->name, $event, $group)
-            );
-        }
+            $person = Person::findOrCreateByEmail($request->email);
 
-            return redirect()
-                ->route("showEvent", [
-                    "groupSlug" => $groupSlug,
-                    "eventSlug" => $eventSlug,
-                ])
-                ->with(
-                    "message",
-                    "Thank you for your RSVP! We're excited to see you there.",
-                )
-                ->with("rsvp_success", true);
+            // Handle subscription checkbox
+            if ($request->has("subscribe")) {
+                $group
+                    ->subscribers()
+                    ->updateOrCreate(
+                        ["email" => $request->email],
+                        ["is_confirmed" => $person->isVerified()],
+                    );
+            }
+
+            $rsvp = RSVP::updateOrCreate(
+                [
+                    "meetup_event_id" => $event->id,
+                    "email" => $request->email,
+                ],
+                [
+                    "name" => $request->name,
+                    "is_confirmed" => $person->isVerified(),
+                ],
+            );
+
+            if ($person->isVerified()) {
+                // Send confirmation email
+                Mail::to($request->email)->send(
+                    new RsvpConfirmation($request->name, $event, $group),
+                );
+
+                return redirect()
+                    ->route("showEvent", [
+                        "groupSlug" => $group->slug,
+                        "eventSlug" => $event->slug,
+                    ])
+                    ->with(
+                        "message",
+                        "Thank you for your RSVP! We're excited to see you there.",
+                    )
+                    ->with("rsvp_success", true);
+            } else {
+                // Send verification email
+                $person->sendVerificationEmail("rsvp", $rsvp, $group, $event);
+
+                return redirect()
+                    ->route("showEvent", [
+                        "groupSlug" => $group->slug,
+                        "eventSlug" => $event->slug,
+                    ])
+                    ->with(
+                        "message",
+                        "Please check your email to verify your address and complete your RSVP.",
+                    )
+                    ->with("rsvp_pending", true);
+            }
+        } else {
+            // Mobile-only RSVP not supported yet
+            abort(
+                401,
+                "Mobile-only RSVPs are not supported yet. Please provide an email address.",
+            );
         }
     }
 

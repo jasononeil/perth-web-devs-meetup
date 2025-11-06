@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+use App\Mail\VerifyEmail;
+
 class Person extends Model
 {
     use HasFactory;
@@ -44,5 +48,41 @@ class Person extends Model
             ["email" => $email],
             ["name" => "", "profile_image_url" => ""],
         );
+    }
+
+    public function sendVerificationEmail(
+        string $type,
+        $relatedModel,
+        MeetupGroup $group,
+        ?MeetupEvent $event = null,
+    ): string {
+        $parameters = [
+            "email" => $this->email,
+            "type" => $type,
+        ];
+
+        // Add type-specific parameter
+        if ($type === "rsvp" && $relatedModel instanceof RSVP) {
+            $parameters["rsvp_id"] = $relatedModel->id;
+        } elseif (
+            $type === "subscription" &&
+            $relatedModel instanceof Subscriber
+        ) {
+            $parameters["subscriber_id"] = $relatedModel->id;
+        }
+
+        // Generate signed URL
+        $verificationUrl = URL::temporarySignedRoute(
+            "verify.email",
+            now()->addHours(48),
+            $parameters,
+        );
+
+        // Send verification email
+        Mail::to($this->email)->send(
+            new VerifyEmail($verificationUrl, $type, $event, $group),
+        );
+
+        return $verificationUrl;
     }
 }
