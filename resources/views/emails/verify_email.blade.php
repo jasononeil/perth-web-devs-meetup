@@ -6,7 +6,7 @@ Thanks for your interest in Perth Web Devs!
 Due to weird spammers who think filling out fake RSVPs is going to get them traffic, we need to verify your email address.
 
 @if($type === 'rsvp')
-Your RSVP will to **{{ $event->name }}** ({{ $group->name }}) will be confirmed once you click the "Verify Email Address" button below.
+Your RSVP to **{{ $event->name }}** ({{ $group->name }}) will be confirmed once you click the "Verify Email Address" button below.
 @else
 Your subscription to **{{ $group->name }}** will be confirmed once you click the "Verify Email Address" button below.
 @endif

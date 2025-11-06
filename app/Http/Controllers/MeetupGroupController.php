@@ -124,7 +124,7 @@ class MeetupGroupController extends Controller
                     ])
                     ->with(
                         "message",
-                        "Please check your email to verify your address and complete your RSVP.",
+                        "Please check your email to verify your address and complete your RSVP. (Sorry we need to do this - it's because spammers keep filling out fake RSVPs!)",
                     )
                     ->with("rsvp_pending", true);
             }
