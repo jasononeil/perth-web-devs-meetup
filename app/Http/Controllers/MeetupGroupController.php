@@ -156,16 +156,33 @@ class MeetupGroupController extends Controller
             "email" => "required|email",
         ]);
 
-        $group->subscribers()->firstOrCreate([
-            "email" => $request->email,
-        ]);
+        $person = Person::findOrCreateByEmail($request->email);
+        $subscriber = $group
+            ->subscribers()
+            ->updateOrCreate(
+                ["email" => $request->email],
+                ["is_confirmed" => $person->isVerified()],
+            );
+
+        if ($person->isVerified()) {
+            $message =
+                "Thanks for subscribing! We'll send you an email when we announce our next event.";
+            $subscribe_success = true;
+            $subscribe_pending = false;
+        } else {
+            // Send an email verification message
+            $person->sendVerificationEmail("subscription", $subscriber, $group);
+
+            $message =
+                "Please check your email to verify your address and complete your subscription.";
+            $subscribe_success = false;
+            $subscribe_pending = true;
+        }
 
         return redirect()
             ->route("showGroup", ["groupSlug" => $groupSlug])
-            ->with(
-                "message",
-                "Thanks for subscribing! We'll send you an email when we announce our next event."
-            )
-            ->with("subscribe_success", true);
+            ->with("message", $message)
+            ->with("subscribe_success", $subscribe_success)
+            ->with("subscribe_pending", $subscribe_pending);
     }
 }
