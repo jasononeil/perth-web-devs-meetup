@@ -56,8 +56,10 @@ class SendEventReminder extends Command
                 continue;
             }
 
-            // Get RSVPs for this event
-            $rsvps = RSVP::where("meetup_event_id", $event->id)->get();
+            // Get verified RSVPs for this event
+            $rsvps = RSVP::where("meetup_event_id", $event->id)
+                ->verified()
+                ->get();
 
             if ($rsvps->isEmpty()) {
                 $this->info("  → No RSVPs found for this event, skipping.");

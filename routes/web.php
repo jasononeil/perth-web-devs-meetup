@@ -24,3 +24,8 @@ Route::post("/meetups/{groupSlug}/subscribe", [
     MeetupGroupController::class,
     "subscribe",
 ])->name("subscribe");
+
+Route::get("/verify-email", [
+    MeetupGroupController::class,
+    "verifyEmail",
+])->name("verify.email");

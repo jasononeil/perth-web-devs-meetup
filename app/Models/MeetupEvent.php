@@ -34,7 +34,7 @@ class MeetupEvent extends Model
 
     public function remainingPlaces()
     {
-        return $this->max_attendance - $this->rsvps()->count();
+        return $this->max_attendance - $this->rsvps()->confirmed()->count();
     }
 
     public function formattedDate()

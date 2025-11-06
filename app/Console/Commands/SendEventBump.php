@@ -61,12 +61,14 @@ class SendEventBump extends Command
             ->filter(fn($e) => "{$e->name} ({$e->formattedDate()})" === $event)
             ->first();
 
-        // Get subscribers who haven't RSVP'd
+        // Get subscribers who haven't RSVP'd (only verified)
         $rsvpEmails = RSVP::where("meetup_event_id", $event->id)
+            ->verified()
             ->pluck("email")
             ->toArray();
 
         $subscribers = Subscriber::where("meetup_group_id", $group->id)
+            ->verified()
             ->whereNotIn("email", $rsvpEmails)
             ->get();
 

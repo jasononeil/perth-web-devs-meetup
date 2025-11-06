@@ -52,7 +52,7 @@
             <h3 class="card-title">Subscribe</h3>
             <section class="card-body">
                 @if (session('message'))
-                    <div class="alert alert-success">
+                    <div class="alert {{ session('subscribe_pending') ? 'alert-info' : 'alert-success' }}">
                         {{ session('message') }}
                     </div>
                 @endif
@@ -65,13 +65,13 @@
                         </ul>
                     </div>
                 @endif
-                @if (!session('subscribe_success'))
+                @if (!session('subscribe_success') && !session('subscribe_pending'))
                     <p>Be the first to know about new events we're hosting.</p>
                     <form method="POST" action="{{ route('subscribe', ['groupSlug' => $group->slug]) }}">
                         @csrf
                         <input type="hidden" name="_rendered_at" value="{{ time() }}">
                         <div style="position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important;">
-                            <label for="website">Please leave this field empty</label>
+                            <label for="website">Please leave this field empty. Apologies to those using screen readers, we use this as a honeypot field to catch bots without resorting to Captchas.</label>
                             <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
                         </div>
                         <div class="app-form-group">
@@ -104,7 +104,7 @@
                         <dt>Location:</dt>
                         <dd>{{ $event->location }}</dd>
                         <dt>Attendees:</dt>
-                        <dd>{{ $event->rsvps()->count() }} people attended</dd>
+                        <dd>{{ $event->rsvps()->confirmed()->count() }} people attended</dd>
                     </dl>
                 </li>
             @endforeach
