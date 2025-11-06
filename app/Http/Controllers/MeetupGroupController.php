@@ -185,4 +185,63 @@ class MeetupGroupController extends Controller
             ->with("subscribe_success", $subscribe_success)
             ->with("subscribe_pending", $subscribe_pending);
     }
+
+    public function verifyEmail(Request $request)
+    {
+        // Verify the signed URL
+        if (!$request->hasValidSignature()) {
+            abort(401, "This verification link has expired or is invalid.");
+        }
+
+        $email = $request->query("email");
+        $type = $request->query("type");
+
+        // Find and verify the person
+        $person = Person::where("email", $email)->first();
+        if (!$person) {
+            abort(404, "Email not found.");
+        }
+
+        $person->markAsVerified();
+
+        // Get the specific RSVP if this was for an RSVP
+        if ($type === "rsvp" && $request->has("rsvp_id")) {
+            $rsvp = RSVP::find($request->query("rsvp_id"));
+            if ($rsvp) {
+                $event = $rsvp->meetupEvent;
+                $group = $event->meetupGroup;
+
+                // Send RSVP confirmation email
+                Mail::to($email)->send(
+                    new RsvpConfirmation($rsvp->name, $event, $group),
+                );
+
+                return redirect()
+                    ->route("showEvent", [
+                        "groupSlug" => $group->slug,
+                        "eventSlug" => $event->slug,
+                    ])
+                    ->with(
+                        "message",
+                        "Email verified! Your RSVP is now confirmed.",
+                    );
+            }
+        }
+
+        // For subscriptions or if RSVP not found
+        // Try to find a group they subscribed to
+        $subscription = Subscriber::where("email", $email)->first();
+        if ($subscription) {
+            $group = $subscription->meetupGroup;
+            return redirect()
+                ->route("showGroup", ["groupSlug" => $group->slug])
+                ->with(
+                    "message",
+                    "Your email is verified - thanks for subscribing! We'll send you an email when we announce our next event.",
+                );
+        }
+
+        // Fallback redirect
+        return redirect("/")->with("message", "Email verified successfully!");
+    }
 }
