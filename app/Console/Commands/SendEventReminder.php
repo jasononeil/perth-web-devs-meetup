@@ -19,16 +19,18 @@ class SendEventReminder extends Command
     public function handle()
     {
         // Find events happening between now and 48 hours from now (in app timezone)
-        $now = Carbon::now(config('app.timezone'));
+        $now = Carbon::now(config("app.timezone"));
         $endDate = $now->copy()->addHours(48);
         $this->info(
-            "Searching {$now->format('Y-m-d H:i:s')} to {$endDate->format('Y-m-d H:i:s')} (app timezone)",
+            "Searching {$now->format("Y-m-d H:i:s")} to {$endDate->format(
+                "Y-m-d H:i:s",
+            )} (app timezone)",
         );
-        
+
         // Convert to strings for SQLite comparison (since DB stores as local time)
         $events = MeetupEvent::whereBetween("start_time", [
-            $now->format('Y-m-d H:i:s'),
-            $endDate->format('Y-m-d H:i:s'),
+            $now->format("Y-m-d H:i:s"),
+            $endDate->format("Y-m-d H:i:s"),
         ])->get();
 
         if ($events->isEmpty()) {
@@ -58,7 +60,7 @@ class SendEventReminder extends Command
 
             // Get verified RSVPs for this event
             $rsvps = RSVP::where("meetup_event_id", $event->id)
-                ->verified()
+                ->confirmed()
                 ->get();
 
             if ($rsvps->isEmpty()) {

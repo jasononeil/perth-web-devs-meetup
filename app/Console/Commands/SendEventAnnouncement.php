@@ -85,7 +85,7 @@ class SendEventAnnouncement extends Command
 
         // Get verified subscribers only
         $subscribers = Subscriber::where("meetup_group_id", $group->id)
-            ->verified()
+            ->confirmed()
             ->get();
 
         if ($subscribers->isEmpty()) {
