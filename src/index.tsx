@@ -9,8 +9,12 @@ import { generateVerificationUrl, validateVerificationUrl } from './lib/verifica
 import { sendEmail } from './lib/resend'
 import { verifyEmailHtml } from './emails/verify-email'
 import { rsvpConfirmationHtml } from './emails/rsvp-confirmation'
+import { admin } from './admin/routes'
 
 const app = new Hono<{ Bindings: Bindings }>()
+
+// Mount admin routes
+app.route('/admin', admin)
 
 // --- Flash message helpers (cookie-based) ---
 

@@ -3,6 +3,7 @@ export type Bindings = {
   RESEND_API_KEY: string
   APP_URL: string
   VERIFICATION_SECRET: string
+  ADMIN_PASSWORD: string
 }
 
 export type MeetupGroup = {
