@@ -1,18 +1,11 @@
 version: "0.5"
 
 processes:
-  pnpm:
-    command: pnpm install --frozen-lockfile
+  install:
+    command: bun install
 
-  php:
-    command: php artisan serve
-
-  laravel_logs:
-    command: tail -f storage/logs/laravel.log
-    restart: always
-
-  vite:
-    command: pnpm dev
+  dev:
+    command: bun run dev
     depends_on:
-      pnpm:
+      install:
         condition: process_completed_successfully
