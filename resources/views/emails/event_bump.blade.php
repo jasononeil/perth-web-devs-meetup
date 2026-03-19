@@ -9,7 +9,7 @@
 - **When**: {{ $event->formattedDate() }} at {{ $event->formattedTime() }}
 - **Where**: {{ $event->location }}
 
-{{ $event->description }}
+{!! $event->description !!}
 
 <x-mail::button :url="$rsvpUrl">
 RSVP Now

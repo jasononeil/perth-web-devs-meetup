@@ -9,7 +9,7 @@ Not long now! We're excited you're coming and look forward to seeing you there.
 - **When**: {{ $event->formattedDate() }} at {{ $event->formattedTime() }}
 - **Where**: {{ $event->location }}
 
-{{ $event->description }}
+{!! $event->description !!}
 
 <x-mail::button :url="$eventUrl">
 View Event Details
