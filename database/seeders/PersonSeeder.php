@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Person;
+use Illuminate\Database\Seeder;
 
 class PersonSeeder extends Seeder
 {
@@ -13,9 +13,9 @@ class PersonSeeder extends Seeder
     public function run()
     {
         Person::create([
-            "name" => "Jason O'Neil",
-            "email" => "jason@jasononeil.au",
-            "profile_image_url" => "/img/jason.jpg",
+            'name' => "Jason O'Neil",
+            'email' => 'jason@jasononeil.au',
+            'profile_image_url' => '/img/jason.jpg',
         ]);
     }
 }

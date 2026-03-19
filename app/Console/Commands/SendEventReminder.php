@@ -13,28 +13,30 @@ use Illuminate\Support\Facades\Mail;
 
 class SendEventReminder extends Command
 {
-    protected $signature = "meetup:event-reminder";
+    protected $signature = 'meetup:event-reminder';
+
     protected $description = "Send reminder emails to RSVP'd attendees 48 hours before events";
 
     public function handle()
     {
         // Find events happening between now and 48 hours from now (in app timezone)
-        $now = Carbon::now(config("app.timezone"));
+        $now = Carbon::now(config('app.timezone'));
         $endDate = $now->copy()->addHours(48);
         $this->info(
-            "Searching {$now->format("Y-m-d H:i:s")} to {$endDate->format(
-                "Y-m-d H:i:s",
+            "Searching {$now->format('Y-m-d H:i:s')} to {$endDate->format(
+                'Y-m-d H:i:s',
             )} (app timezone)",
         );
 
         // Convert to strings for SQLite comparison (since DB stores as local time)
-        $events = MeetupEvent::whereBetween("start_time", [
-            $now->format("Y-m-d H:i:s"),
-            $endDate->format("Y-m-d H:i:s"),
+        $events = MeetupEvent::whereBetween('start_time', [
+            $now->format('Y-m-d H:i:s'),
+            $endDate->format('Y-m-d H:i:s'),
         ])->get();
 
         if ($events->isEmpty()) {
-            $this->info("No events found happening in the next 48 hours.");
+            $this->info('No events found happening in the next 48 hours.');
+
             return 0;
         }
 
@@ -45,26 +47,28 @@ class SendEventReminder extends Command
 
             // Check if reminders have already been sent for this event
             $existingReminder = MeetupEventMessage::where(
-                "meetup_event_id",
+                'meetup_event_id',
                 $event->id,
             )
-                ->where("message_type", "reminder")
+                ->where('message_type', 'reminder')
                 ->first();
 
             if ($existingReminder) {
                 $this->info(
-                    "  → Reminders already sent for this event, skipping.",
+                    '  → Reminders already sent for this event, skipping.',
                 );
+
                 continue;
             }
 
             // Get verified RSVPs for this event
-            $rsvps = RSVP::where("meetup_event_id", $event->id)
+            $rsvps = RSVP::where('meetup_event_id', $event->id)
                 ->confirmed()
                 ->get();
 
             if ($rsvps->isEmpty()) {
-                $this->info("  → No RSVPs found for this event, skipping.");
+                $this->info('  → No RSVPs found for this event, skipping.');
+
                 continue;
             }
 
@@ -73,9 +77,9 @@ class SendEventReminder extends Command
 
             // Create the message record
             $messageRecord = MeetupEventMessage::create([
-                "meetup_event_id" => $event->id,
-                "message_type" => "reminder",
-                "custom_message" => null,
+                'meetup_event_id' => $event->id,
+                'message_type' => 'reminder',
+                'custom_message' => null,
             ]);
 
             // Send reminders to all RSVP'd attendees
@@ -88,9 +92,9 @@ class SendEventReminder extends Command
 
                     // Log the email send
                     MeetupEventMailLog::create([
-                        "meetup_event_message_id" => $messageRecord->id,
-                        "recipient_email" => $rsvp->email,
-                        "sent_at" => Carbon::now(),
+                        'meetup_event_message_id' => $messageRecord->id,
+                        'recipient_email' => $rsvp->email,
+                        'sent_at' => Carbon::now(),
                     ]);
 
                     $sentCount++;

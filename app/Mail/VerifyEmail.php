@@ -20,7 +20,7 @@ class VerifyEmail extends Mailable
     public function __construct(
         public string $verificationUrl,
         public string $type, // 'rsvp' or 'subscription'
-        public ?MeetupEvent $event = null,
+        public ?MeetupEvent $event,
         public MeetupGroup $group,
     ) {}
 
@@ -30,9 +30,10 @@ class VerifyEmail extends Mailable
     public function envelope(): Envelope
     {
         $subject =
-            $this->type === "rsvp"
+            $this->type === 'rsvp'
                 ? "Please verify your email address to complete your RSVP to {$this->group->name}"
                 : "Please verify your email address to confirm your subscribtion to {$this->group->name}";
+
         return new Envelope(subject: $subject);
     }
 
@@ -41,7 +42,7 @@ class VerifyEmail extends Mailable
      */
     public function content(): Content
     {
-        return new Content(markdown: "emails.verify_email");
+        return new Content(markdown: 'emails.verify_email');
     }
 
     /**

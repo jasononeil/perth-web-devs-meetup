@@ -12,7 +12,7 @@ return new class extends Migration
     {
         // Collect all unique email addresses from RSVPs and Subscribers
         $emails = collect();
-        
+
         // Get unique emails from RSVPs with name data
         $rsvpEmails = DB::table('rsvps')
             ->select('email', 'name')
@@ -23,12 +23,13 @@ return new class extends Migration
             ->map(function ($group) {
                 // For each email, get the first non-empty name if available
                 $name = $group->firstWhere('name', '!=', '')?->name ?? '';
+
                 return [
                     'email' => $group[0]->email,
                     'name' => $name,
                 ];
             });
-        
+
         // Get unique emails from Subscribers (no name field)
         $subscriberEmails = DB::table('subscribers')
             ->select('email')
@@ -42,21 +43,22 @@ return new class extends Migration
                     'name' => '',
                 ];
             });
-        
+
         // Merge both collections, preferring RSVP names over empty names
         $allEmails = $rsvpEmails->merge($subscriberEmails)
             ->groupBy('email')
             ->map(function ($group) {
                 // Prefer entries with non-empty names
                 $withName = $group->firstWhere('name', '!=', '');
+
                 return $withName ?? $group->first();
             });
-        
+
         // Get existing people emails to avoid duplicates
         $existingEmails = DB::table('people')
             ->pluck('email')
             ->flip();
-        
+
         // Prepare data for insertion
         $now = now();
         $peopleToInsert = $allEmails
@@ -77,9 +79,9 @@ return new class extends Migration
             })
             ->values()
             ->all();
-        
+
         // Insert in batches to avoid memory issues
-        if (!empty($peopleToInsert)) {
+        if (! empty($peopleToInsert)) {
             $chunks = array_chunk($peopleToInsert, 100);
             foreach ($chunks as $chunk) {
                 DB::table('people')->insert($chunk);

@@ -2,32 +2,32 @@
 
 namespace App\Models;
 
+use App\Mail\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
-use App\Mail\VerifyEmail;
 
 class Person extends Model
 {
     use HasFactory;
 
-    protected $table = "people";
+    protected $table = 'people';
 
     protected $fillable = [
-        "name",
-        "email",
-        "profile_image_url",
-        "email_verified_at",
+        'name',
+        'email',
+        'profile_image_url',
+        'email_verified_at',
     ];
 
     protected $casts = [
-        "email_verified_at" => "datetime",
+        'email_verified_at' => 'datetime',
     ];
 
     public function isVerified(): bool
     {
-        return !is_null($this->email_verified_at);
+        return ! is_null($this->email_verified_at);
     }
 
     public function markAsVerified(): void
@@ -36,17 +36,17 @@ class Person extends Model
         $this->save();
 
         // Confirm all RSVPs and subscriptions for this email
-        RSVP::where("email", $this->email)->update(["is_confirmed" => true]);
-        Subscriber::where("email", $this->email)->update([
-            "is_confirmed" => true,
+        RSVP::where('email', $this->email)->update(['is_confirmed' => true]);
+        Subscriber::where('email', $this->email)->update([
+            'is_confirmed' => true,
         ]);
     }
 
     public static function findOrCreateByEmail(string $email): Person
     {
         return self::firstOrCreate(
-            ["email" => $email],
-            ["name" => "", "profile_image_url" => ""],
+            ['email' => $email],
+            ['name' => '', 'profile_image_url' => ''],
         );
     }
 
@@ -57,23 +57,23 @@ class Person extends Model
         ?MeetupEvent $event = null,
     ): string {
         $parameters = [
-            "email" => $this->email,
-            "type" => $type,
+            'email' => $this->email,
+            'type' => $type,
         ];
 
         // Add type-specific parameter
-        if ($type === "rsvp" && $relatedModel instanceof RSVP) {
-            $parameters["rsvp_id"] = $relatedModel->id;
+        if ($type === 'rsvp' && $relatedModel instanceof RSVP) {
+            $parameters['rsvp_id'] = $relatedModel->id;
         } elseif (
-            $type === "subscription" &&
+            $type === 'subscription' &&
             $relatedModel instanceof Subscriber
         ) {
-            $parameters["subscriber_id"] = $relatedModel->id;
+            $parameters['subscriber_id'] = $relatedModel->id;
         }
 
         // Generate signed URL
         $verificationUrl = URL::temporarySignedRoute(
-            "verify.email",
+            'verify.email',
             now()->addHours(48),
             $parameters,
         );

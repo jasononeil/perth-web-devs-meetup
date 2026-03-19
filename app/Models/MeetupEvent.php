@@ -11,15 +11,15 @@ class MeetupEvent extends Model
     use HasFactory;
 
     protected $fillable = [
-        "meetup_group_id",
-        "name",
-        "slug",
-        "description",
-        "location",
-        "start_time",
-        "end_time",
-        "max_attendance",
-        "accepting_rsvps",
+        'meetup_group_id',
+        'name',
+        'slug',
+        'description',
+        'location',
+        'start_time',
+        'end_time',
+        'max_attendance',
+        'accepting_rsvps',
     ];
 
     public function meetupGroup()
@@ -39,24 +39,24 @@ class MeetupEvent extends Model
 
     public function formattedDate()
     {
-        return date("l, jS F Y", strtotime($this->start_time));
+        return date('l, jS F Y', strtotime($this->start_time));
     }
 
     public function formattedTime()
     {
-        return date("g:ia", strtotime($this->start_time)) .
-            " - " .
-            date("g:ia", strtotime($this->end_time));
+        return date('g:ia', strtotime($this->start_time)).
+            ' - '.
+            date('g:ia', strtotime($this->end_time));
     }
 
     public function dayOfWeek()
     {
-        return date("l", strtotime($this->start_time));
+        return date('l', strtotime($this->start_time));
     }
 
     public function hosts()
     {
-        return $this->belongsToMany("App\Models\Person", "meetup_event_hosts");
+        return $this->belongsToMany("App\Models\Person", 'meetup_event_hosts');
     }
 
     public function isArchived(): bool

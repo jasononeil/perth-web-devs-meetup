@@ -23,7 +23,7 @@ class MeetupGroup extends Model
     {
         return $this->belongsToMany(
             "App\Models\Person",
-            "meetup_group_organisers"
+            'meetup_group_organisers'
         );
     }
 }

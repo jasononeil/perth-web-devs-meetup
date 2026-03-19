@@ -10,13 +10,13 @@ class MeetupEventMessage extends Model
     use HasFactory;
 
     protected $fillable = [
-        "meetup_event_id",
-        "message_type", // enum: 'announcement', 'bump', 'reminder'
-        "custom_message",
+        'meetup_event_id',
+        'message_type', // enum: 'announcement', 'bump', 'reminder'
+        'custom_message',
     ];
 
     protected $casts = [
-        "message_type" => "string",
+        'message_type' => 'string',
     ];
 
     public function meetupEvent()

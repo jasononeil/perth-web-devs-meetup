@@ -11,94 +11,96 @@ use Illuminate\Support\Str;
 
 class EditMeetupEvent extends Command
 {
-    protected $signature = "meetup:edit-event";
-    protected $description = "Edit an existing meetup event";
+    protected $signature = 'meetup:edit-event';
+
+    protected $description = 'Edit an existing meetup event';
 
     public function handle()
     {
-        $events = MeetupEvent::with(["hosts"])->get();
+        $events = MeetupEvent::with(['hosts'])->get();
         if ($events->isEmpty()) {
-            $this->error("No events found to edit.");
+            $this->error('No events found to edit.');
+
             return 1;
         }
 
         // Select event to edit
-        $eventChoices = $events->pluck("name", "id")->toArray();
-        $eventChoice = $this->choice("Select event to edit:", $eventChoices);
+        $eventChoices = $events->pluck('name', 'id')->toArray();
+        $eventChoice = $this->choice('Select event to edit:', $eventChoices);
         $eventId = array_search($eventChoice, $eventChoices);
-        $event = MeetupEvent::with(["hosts"])->find($eventId);
+        $event = MeetupEvent::with(['hosts'])->find($eventId);
 
         // Edit basic details
-        $name = $this->ask("Event name:", $event->name);
+        $name = $this->ask('Event name:', $event->name);
         $event->name = $name;
         $event->slug = Str::slug($name);
 
         // Launch editor for description
-        $tempFile = tempnam(sys_get_temp_dir(), "meetup-description");
+        $tempFile = tempnam(sys_get_temp_dir(), 'meetup-description');
         file_put_contents($tempFile, $event->description);
-        $this->info("Opening editor for event description...");
-        $editor = getenv("EDITOR") ?: "vim";
-        Process::forever()->tty()->run(sprintf("%s %s", $editor, $tempFile));
+        $this->info('Opening editor for event description...');
+        $editor = getenv('EDITOR') ?: 'vim';
+        Process::forever()->tty()->run(sprintf('%s %s', $editor, $tempFile));
         $description = trim(file_get_contents($tempFile));
         unlink($tempFile);
         $event->description = $description ?: $event->description;
-        $event->location = $this->ask("Event location:", $event->location);
+        $event->location = $this->ask('Event location:', $event->location);
 
         // Date and time
         $startTime = Carbon::parse($event->start_time);
         $endTime = Carbon::parse($event->end_time);
 
         $date = $this->ask(
-            "Event date (YYYY-MM-DD):",
-            $startTime->format("Y-m-d")
+            'Event date (YYYY-MM-DD):',
+            $startTime->format('Y-m-d')
         );
         $newStartTime = $this->ask(
-            "Start time (HH:MM):",
-            $startTime->format("H:i")
+            'Start time (HH:MM):',
+            $startTime->format('H:i')
         );
-        $newEndTime = $this->ask("End time (HH:MM):", $endTime->format("H:i"));
+        $newEndTime = $this->ask('End time (HH:MM):', $endTime->format('H:i'));
 
         $event->start_time = Carbon::parse("$date $newStartTime");
         $event->end_time = Carbon::parse("$date $newEndTime");
 
         $event->max_attendance = $this->ask(
-            "Maximum number of attendees:",
+            'Maximum number of attendees:',
             $event->max_attendance
         );
         $event->accepting_rsvps = $this->confirm(
-            "Accept RSVPs?",
+            'Accept RSVPs?',
             $event->accepting_rsvps
         );
 
         // Edit hosts
         if (
-            $this->confirm("Would you like to modify the event hosts?", false)
+            $this->confirm('Would you like to modify the event hosts?', false)
         ) {
             $people = Person::all();
             if ($people->isNotEmpty()) {
-                $hostChoices = $people->pluck("name", "id")->toArray();
-                $hostChoices["0"] = "Done adding hosts";
+                $hostChoices = $people->pluck('name', 'id')->toArray();
+                $hostChoices['0'] = 'Done adding hosts';
 
-                $currentHosts = $event->hosts->pluck("id")->toArray();
+                $currentHosts = $event->hosts->pluck('id')->toArray();
                 $selectedHosts = $currentHosts;
 
                 $this->info(
-                    "Current hosts: " .
-                        $event->hosts->pluck("name")->implode(", ")
+                    'Current hosts: '.
+                        $event->hosts->pluck('name')->implode(', ')
                 );
                 $this->info(
                     'Select hosts for the event (choose "Done adding hosts" when finished):'
                 );
 
                 while (true) {
-                    $hostChoice = $this->choice("Select a host:", $hostChoices);
+                    $hostChoice = $this->choice('Select a host:', $hostChoices);
 
-                    if ($hostChoice === "Done adding hosts") {
+                    if ($hostChoice === 'Done adding hosts') {
                         break;
                     }
 
                     $hostId = array_search($hostChoice, $hostChoices);
-                    if (!in_array($hostId, $selectedHosts)) {
+                    if (! in_array($hostId, $selectedHosts)) {
                         $selectedHosts[] = $hostId;
                         $this->info("Added {$hostChoice} as a host");
                     }
@@ -108,24 +110,24 @@ class EditMeetupEvent extends Command
                 $event->hosts()->sync($selectedHosts);
             } else {
                 $this->warn(
-                    "No people available to select as hosts. Add people to the database first."
+                    'No people available to select as hosts. Add people to the database first.'
                 );
             }
         }
 
         $event->save();
 
-        $this->info("Event updated successfully!");
+        $this->info('Event updated successfully!');
         $this->table(
-            ["Field", "Value"],
+            ['Field', 'Value'],
             [
-                ["Name", $event->name],
-                ["Slug", $event->slug],
-                ["Date", $event->formattedDate()],
-                ["Time", $event->formattedTime()],
-                ["Location", $event->location],
-                ["Max Attendance", $event->max_attendance],
-                ["Accepting RSVPs", $event->accepting_rsvps ? "Yes" : "No"],
+                ['Name', $event->name],
+                ['Slug', $event->slug],
+                ['Date', $event->formattedDate()],
+                ['Time', $event->formattedTime()],
+                ['Location', $event->location],
+                ['Max Attendance', $event->max_attendance],
+                ['Accepting RSVPs', $event->accepting_rsvps ? 'Yes' : 'No'],
             ]
         );
 

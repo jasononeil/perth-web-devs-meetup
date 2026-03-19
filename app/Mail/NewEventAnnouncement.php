@@ -5,9 +5,7 @@ namespace App\Mail;
 use App\Models\MeetupEvent;
 use App\Models\MeetupGroup;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -23,8 +21,7 @@ class NewEventAnnouncement extends Mailable
         public MeetupEvent $event,
         public MeetupGroup $group,
         public string $rsvpUrl,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the message envelope.
@@ -41,7 +38,7 @@ class NewEventAnnouncement extends Mailable
      */
     public function content(): Content
     {
-        return new Content(markdown: "emails.new_event_announcement");
+        return new Content(markdown: 'emails.new_event_announcement');
     }
 
     /**

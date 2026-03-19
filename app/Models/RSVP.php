@@ -10,14 +10,14 @@ class RSVP extends Model
 {
     use HasFactory;
 
-    protected $table = "rsvps";
+    protected $table = 'rsvps';
 
     protected $fillable = [
-        "meetup_event_id",
-        "name",
-        "email",
-        "mobile",
-        "is_confirmed",
+        'meetup_event_id',
+        'name',
+        'email',
+        'mobile',
+        'is_confirmed',
     ];
 
     public function meetupEvent()
@@ -27,7 +27,7 @@ class RSVP extends Model
 
     public function scopeConfirmed(Builder $query): void
     {
-        $query->where("is_confirmed", true);
+        $query->where('is_confirmed', true);
     }
 
     public function isConfirmed(): bool

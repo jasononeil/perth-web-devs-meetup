@@ -2,13 +2,10 @@
 
 namespace App\Mail;
 
-use App\Models\RSVP;
 use App\Models\MeetupEvent;
 use App\Models\MeetupGroup;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -24,8 +21,7 @@ class RsvpConfirmation extends Mailable
         public string $name,
         public MeetupEvent $event,
         public MeetupGroup $group
-    ) {
-    }
+    ) {}
 
     /**
      * Get the message envelope.
@@ -42,7 +38,7 @@ class RsvpConfirmation extends Mailable
      */
     public function content(): Content
     {
-        return new Content(markdown: "emails.rsvp_confirmation");
+        return new Content(markdown: 'emails.rsvp_confirmation');
     }
 
     /**
