@@ -27,9 +27,9 @@ class MeetupGroupController extends Controller
         }
 
         // Separate upcoming and archived events
-        $upcomingEvents = $group->meetupEvents->filter(function ($event) {
-            return ! $event->isArchived();
-        });
+        $upcomingEvents = $group->meetupEvents
+            ->filter(fn ($event) => ! $event->isArchived())
+            ->sortBy('start_time');
 
         $archivedEvents = $group->meetupEvents->filter(function ($event) {
             return $event->isArchived();
