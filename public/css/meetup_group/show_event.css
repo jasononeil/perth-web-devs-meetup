@@ -13,9 +13,10 @@
 
 .event-grid {
     display: grid;
-    grid-gap: 80px;
+    grid-gap: 40px;
     grid-template-columns: 1fr;
-    @media (min-width: 400px) {
+    @media (min-width: 768px) {
+        grid-gap: 80px;
         grid-template-columns: 1fr 1fr;
     }
 

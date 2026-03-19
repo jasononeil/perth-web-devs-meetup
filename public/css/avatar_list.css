@@ -1,21 +1,32 @@
 .avatar-list {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
     list-style: none;
     padding: 0;
     margin: 0;
 
     figure {
         margin: 0;
-        width: 180px;
+        width: 120px;
         img {
             border-radius: 50%;
-            width: 180px;
+            width: 120px;
         }
         figcaption {
             text-align: center;
             font-weight: 600;
             font-size: 16px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        figure {
+            width: 180px;
+            img {
+                width: 180px;
+            }
         }
     }
 }

@@ -7,7 +7,7 @@
 body {
     font-family: "Jost", sans-serif;
     font-weight: 250;
-    margin: 2em auto;
+    margin: 2em 1em;
     max-width: 1600px;
 
     @media (min-width: 768px) {
@@ -17,7 +17,7 @@ body {
 
 h1 {
     font-weight: 800;
-    font-size: 10vw;
+    font-size: clamp(2rem, 10vw, 8rem);
     margin-bottom: 12px;
     rotate: -2deg;
     text-align: center;
@@ -30,7 +30,7 @@ h1 {
 
 h2 {
     font-weight: 800;
-    font-size: 3rem;
+    font-size: clamp(1.75rem, 7vw, 3rem);
 }
 
 .lede-text {
@@ -50,7 +50,15 @@ h2 {
     max-width: 320px;
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
+    gap: 8px;
+
+    input[type="text"],
+    input[type="email"] {
+        flex: 1;
+        min-width: 0;
+    }
 }
 
 .alert {
