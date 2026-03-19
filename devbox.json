@@ -3,7 +3,7 @@
   "packages": [
     "php@latest",
     "php83Packages.composer@latest",
-    "nodejs@18",
+    "nodejs@24",
     "prek@latest"
   ],
   "include": ["plugin:php"],
