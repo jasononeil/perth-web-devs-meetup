@@ -1,0 +1,15 @@
+repos:
+  - repo: local
+    hooks:
+      - id: format-php
+        name: Format (php, pint)
+        language: system
+        entry: ./vendor/bin/pint
+        files: ./
+        types: [php]
+      - id: test-php
+        name: Tests (phpunit)
+        language: system
+        entry: php artisan test
+        files: \.php$
+        pass_filenames: false
