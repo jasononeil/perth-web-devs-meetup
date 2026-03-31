@@ -1,0 +1,263 @@
+/* === Base (app.css) === */
+@font-face {
+    font-family: "Jost";
+    src: url("/fonts/jost/Jost-VariableFont_wght.ttf") format("truetype");
+    font-weight: 200 300 400 500 600 700 800;
+}
+
+body {
+    font-family: "Jost", sans-serif;
+    font-weight: 250;
+    margin: 2em auto;
+    max-width: 1600px;
+
+    @media (min-width: 768px) {
+        margin: 4em 10vw;
+    }
+}
+
+h1 {
+    font-weight: 800;
+    font-size: 10vw;
+    margin-bottom: 12px;
+    rotate: -2deg;
+    text-align: center;
+    position: relative;
+    top: 0;
+    z-index: -1;
+}
+
+h2 {
+    font-weight: 800;
+    font-size: 3rem;
+}
+
+.lede-text {
+    font-size: 28px;
+}
+
+.app-btn {
+    background: black;
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+}
+
+.app-form-group {
+    margin: 4px 0;
+    max-width: 320px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.alert {
+    padding: 12px;
+    border-radius: 4px;
+    margin: 16px 0;
+}
+
+.alert::before {
+    margin-right: 4px;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.alert-info::before {
+    content: "\2139\FE0F";
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-success::before {
+    content: "\2705";
+}
+
+/* === Cards === */
+.cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+
+    @media (min-width: 321px) {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+
+    li {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+
+        &:first-child {
+            grid-column: 1 / -1;
+        }
+
+        .card-title {
+            margin: 0;
+            padding: 20px;
+            background: black;
+            color: white;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .card-body {
+            padding: 20px;
+            border-radius: inherit;
+        }
+    }
+}
+
+/* === Event Details === */
+.event-details {
+    display: grid;
+    grid-template-columns: max-content auto;
+    gap: 1em;
+
+    dt {
+        font-weight: bold;
+        margin-right: 0.5em;
+    }
+    dd {
+        margin-left: 0;
+    }
+}
+
+/* === Avatar List === */
+.avatar-list {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    figure {
+        margin: 0;
+        width: 180px;
+        img {
+            border-radius: 50%;
+            width: 180px;
+        }
+        figcaption {
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+    }
+}
+
+/* === Group Show Page === */
+.event {
+    h3 {
+        margin: 0;
+        font-weight: 400;
+        font-size: 2em;
+        transition: font-weight 0.2s ease-out;
+
+        a {
+            background-color: black;
+            color: white;
+        }
+    }
+
+    &:hover h3 {
+        font-weight: 800;
+    }
+}
+
+.event.archived {
+    opacity: 0.7;
+
+    h3 {
+        font-size: 1.5em;
+
+        a {
+            color: white;
+        }
+    }
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.archived-events {
+    margin-top: 2rem;
+
+    li:first-child {
+        grid-column: auto;
+    }
+}
+
+.no-events {
+    p {
+        font-style: italic;
+        color: #666;
+        text-align: center;
+        padding: 2rem;
+    }
+}
+
+.subscribe {
+    h3 {
+        font-size: 2em;
+        font-weight: 400;
+    }
+
+    p {
+        margin-top: 0;
+    }
+}
+
+h3 {
+    font-size: 28px;
+}
+
+/* === Event Show Page === */
+.back-link {
+    margin-top: 20px;
+    margin-left: 10px;
+    font-size: 20px;
+    color: #000;
+    transition: font-weight 0.2s ease-out;
+    font-weight: 200;
+    &:hover {
+        font-weight: 800;
+    }
+}
+
+.event-grid {
+    display: grid;
+    grid-gap: 80px;
+    grid-template-columns: 1fr;
+    @media (min-width: 400px) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    h3 {
+        font-size: 28px;
+    }
+}
+
+.archived-badge {
+    display: inline-block;
+    background: #eee;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-size: 0.7em;
+    color: #666;
+    font-weight: normal;
+    vertical-align: middle;
+}
