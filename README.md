@@ -15,6 +15,20 @@ To start developing:
 
 This will start a server at `http://localhost:8000`.
 
+## Docker deployment
+
+Build the image with `docker build -t perth-web-devs .`. It serves HTTP on
+port 8080 and runs Laravel migrations automatically when the container starts.
+Provide production configuration at runtime, including `APP_ENV=production`,
+`APP_DEBUG=false`, `APP_KEY`, `APP_URL`, database settings, and mail settings.
+Use the existing application key and database when moving an existing deployment.
+
+If using SQLite, set `DB_CONNECTION=sqlite` and `DB_DATABASE` to an absolute
+path on a persistent volume. Create or copy the database file there before
+starting the container, and ensure the `www-data` user can write to both the
+file and its directory. Persist any application files stored under `storage/`
+as needed. Set `LOG_CHANNEL=stderr` to send Laravel logs to container logs.
+
 ## Commands
 
 Run `php artisan meetup` to see available commands for this project.
