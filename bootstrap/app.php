@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // In our deployed environment, only Caddy can reach this container.
+        // Setting `trustProxies` gets Laravel to render HTTPS links even though this server is running HTTP
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
